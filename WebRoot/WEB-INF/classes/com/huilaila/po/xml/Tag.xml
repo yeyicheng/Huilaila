@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Tag">
+
+	<typeAlias alias="tag" type="com.huilaila.po.Tag" />
+	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+
+	<parameterMap class="tag" id="pm_tag_without_id">
+		<parameter property="tag" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>
+
+	<sql id="byTagIdCondition">
+		<![CDATA[
+		   tagId = #tagId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_tag_without_id">
+		<![CDATA[
+			INSERT INTO t_tags (tag) VALUES (?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="tag">
+		<![CDATA[
+			delete t_tags
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byTagIdCondition" />
+		</dynamic>
+	</delete>
+</sqlMap>

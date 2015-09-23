@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<include file="struts-default.xml" />
+
+	<package name="my-default" extends="json-default">
+		<interceptors><!-- 定义权限控制拦截器 -->
+			<interceptor name="loginInteceptor"
+				class="com.huilaila.interceptor.LoginInterceptor">
+				<param name="excludeMethods">login,regist</param>
+			</interceptor><!-- 定义一个包含权限控制的拦截器栈 -->
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="loginInteceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors><!-- 定义默认拦截器 -->
+		<default-interceptor-ref name="mydefault" /><!-- 
+			定义全局处理结果 -->
+		<global-results><!-- 逻辑名为login的结果，映射到/index.jsp页面 -->
+			<result name="login">/index.jsp</result>
+			<result name="error">/index.jsp</result>
+		</global-results>
+	</package>
+
+
+	<package name="json" extends="my-default">
+		<!-- 商品管理 -->
+		<action name="saveCommodity" class="commodityAction" method="saveCommodity">
+			<!-- <interceptor-ref name="loginInteceptor"></interceptor-ref> -->
+			<result type="json">
+				<param name="includeProperties">success,dutyId</param>
+			</result>
+		</action>
+		<action name="deleteCommodity" class="commodityAction" method="deleteCommodity">
+			<!-- <interceptor-ref name="loginInteceptor"></interceptor-ref> -->
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="updateCommodity" class="commodityAction" method="updateCommodity">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="findCommodityByIds" class="commodityAction"
+			method="findByIds">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="findCommodity" class="commodityAction" method="findCommodity">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="findCommodityByNovid" class="commodityAction"
+			method="findCommodityByNovid">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="findAllCommodity" class="commodityAction" method="findAllCommodity">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="findExact" class="commodityAction" method="findExact">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="upload" class="commodityAction" method="upload">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+
+		<!-- 用户管理 -->
+		<action name="saveUser" class="userAction" method="saveUser">
+			<result type="json">
+				<param name="includeProperties">success,userId</param>
+			</result>
+		</action>
+		<action name="deleteUser" class="userAction" method="deleteUser">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="updateUser" class="userAction" method="updateUser">
+			<result type="json">
+				<param name="includeProperties">success,tip</param>
+			</result>
+		</action>
+		<action name="findAllUser" class="userAction" method="findAllUser">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="findUserByExample" class="userAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="login" class="userAction" method="login">
+			<result>main.jsp</result>
+			<result name="input">login.jsp</result>
+		</action>
+		<action name="logout" class="userAction" method="logout">
+			<result type="redirect">login.jsp</result>
+		</action>
+		<action name="regist" class="userAction" method="register">
+			<result name="success">login.jsp</result>
+			<result name="error">register.jsp</result>
+		</action>
+
+		<!-- 标签管理 -->
+		<action name="saveTag" class="tagAction" method="saveTag">
+			<result type="json">
+				<param name="includeProperties">success,tagId</param>
+			</result>
+		</action>
+		<action name="deleteTag" class="tagAction" method="deleteTag">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+
+		<!-- 用户标签管理 -->
+		<action name="saveUserTag" class="userTagAction" method="saveUserTag">
+			<result type="json">
+				<param name="includeProperties">success,addressId</param>
+			</result>
+		</action>
+		<action name="deleteUserTag" class="userTagAction" method="deleteUserTag">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="deleteUserTagByUserIdAndTagId" class="userTagAction"
+			method="deleteUserTagByUserIdAndTagId">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+
+		<!-- 职位管理 -->
+		<action name="saveJob" class="jobAction" method="saveJob">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="updateJob" class="jobAction" method="updateJob">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="findAllJob" class="jobAction" method="findAllJob">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="deleteJob" class="jobAction" method="deleteJob">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="findByExample" class="jobAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+
+		<!-- 公司管理 -->
+		<action name="saveCompany" class="companyAction" method="saveCompany">
+			<result type="json">
+				<param name="includeProperties">success, companyId, tip</param>
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="deleteCompany" class="companyAction" method="deleteCompany">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="updateCompany" class="companyAction" method="updateCompany">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="findAllCompany" class="companyAction" method="findAllCompany">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<action name="findCompanyByExample" class="companyAction"
+			method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+		<!-- <action name="orderExport" class="orderAction"> <result name="success" 
+			type="stream"> 指定输出的为Excel文件 <param name="contentType">application/vnd.ms-excel</param> 
+			类型是附件和指定下载时文件的默认名字 <param name="contentDisposition">attachment;filename=${ 
+			excelFile }</param> 这里的inputName的属性要和action里相应的get方法的名字对应。例如action的对应的方法名是getDownloadFile 
+			所以这里用downloadFile <param name="inputName">inputStream</param> <param name="bufferSize">1024</param> 
+			</result> </action> -->
+
+		<!-- 简历管理 -->
+		<action name="saveResume" class="resumeAction" method="saveResume">
+			<result type="json">
+				<param name="includeProperties">success, resumeId, tip</param>
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="updateResume" class="resumeAction" method="updateResume">
+			<result type="json">
+				<param name="includeProperties">success, discountId</param>
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="findAllResume" class="resumeAction" method="findAllResume">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="deleteResume" class="resumeAction" method="deleteResume">
+			<result type="json">
+				<param name="includeProperties">success, discountId</param>
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="findResumeByExample" class="resumeAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+
+		<!-- 职位收藏管理 -->
+		<action name="saveJobFavorite" class="jobFavoriteAction"
+			method="saveJobFavorite">
+			<result type="json">
+				<param name="includeProperties">success, jobFavoriteId</param>
+			</result>
+		</action>
+		<action name="deleteJobFavorite" class="jobFavoriteAction"
+			method="deleteJobFavorite">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+
+		<!-- 职位申请管理 -->
+		<action name="saveJobApplication" class="jobApplicationAction"
+			method="saveJobApplication">
+			<result type="json">
+				<param name="includeProperties">success, jobApplicationId</param>
+			</result>
+		</action>
+		<action name="deleteJobApplication" class="jobApplicationAction"
+			method="deleteJobApplication">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="updateJobApplication" class="jobApplicationAction"
+			method="updateJobApplication">
+			<result type="json">
+				<param name="includeProperties">success</param>
+			</result>
+		</action>
+		<action name="findJobApplicationByExample" class="jobApplicationAction"
+			method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Job">
+
+	<typeAlias alias="job" type="com.huilaila.Job" />
+	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+
+	<parameterMap class="job" id="pm_job_without_id">
+		<parameter property="jobTitle" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="companyId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="description" javaType="string"
+			jdbcType="VARCHAR" />
+		<parameter property="function" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="contact" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="verification" javaType="integer"
+			jdbcType="NUMBER" />
+	</parameterMap>
+	<sql id="byJobIdCondition">
+		<![CDATA[
+		   jobId = #jobId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_job_without_id">
+		<![CDATA[
+			INSERT INTO t_jobs 
+						(jobTitle, companyId, description, function, userId, contact, verification) 
+				 VALUES (?, ?, ?, ?, ?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="job">
+		<![CDATA[
+			delete t_jobs
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byJobIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="job">
+		<![CDATA[
+			UPDATE t_jobs
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="jobTitle" prepend=",">
+				<![CDATA[
+					jobTitle = #jobTitle:VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend=",">
+				<![CDATA[
+					description = #description:VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="function" prepend=",">
+				<![CDATA[
+					function = #function:VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="contact" prepend=",">
+				<![CDATA[
+					contact = #contact:VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="verification" prepend=",">
+				<![CDATA[
+					verification = #verification:VARCHAR#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byJobIdCondition" />
+		</dynamic>
+	</update>
+
+	<sql id="findJobByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(jobTitle) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+				    OR upper(descritpion) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+				    OR upper(function) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+				    OR upper(companyName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="job">
+		<![CDATA[
+			SELECT TOP $limit$ * FROM t_jobs t1 left join t_companys t2 on t1.companyId = t2.companyId 
+					WHERE (jobId >= (SELECT MAX(jobId) FROM (SELECT TOP $start$ jobId FROM t_jobs 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findJobByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY jobId ) AS T)) 
+		]]>
+		<dynamic prepend="AND">
+			<include refid="findJobByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY jobId
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_jobs t1 left join t_companys t2 on t1.companyId = t2.companyId 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findJobByPageCondition" />
+		</dynamic>
+	</select>
+
+
+	<select id="findByExample" parameterClass="job" resultClass="job">
+		<![CDATA[
+			SELECT * FROM t_jobs 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="jobTitle" prepend="AND">
+				jobTitle = #jobTitle: VARCHAR#		 
+			</isNotEmpty>
+			<isNotEmpty property="companyId" prepend="AND">
+				companyId = #companyId: NUMBER#
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend="AND">
+				description LIKE '%' + #description: VARCHAR# + '%'
+			</isNotEmpty>
+			<isNotEmpty property="function" prepend="AND">
+				function = #function: VARCHAR#
+			</isNotEmpty>
+			<isNotEmpty property="contact" prepend="AND">
+				contact = #contact: VARCHAR#
+			</isNotEmpty>
+			<isNotEmpty property="verification" prepend="AND">
+				verification = #verification: NUMBER#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

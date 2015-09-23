@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UserTag">
+
+	<typeAlias alias="userTag" type="com.huilaila.po.UserTag" />
+	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+
+	<parameterMap class="userTag" id="pm_userTag_without_id">
+		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="tagId" javaType="long" jdbcType="NUMBER" />
+	</parameterMap>
+
+	<sql id="byUserTagIdCondition">
+		<![CDATA[
+		   userTagId = #userTagId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_userTag_without_id">
+		<![CDATA[
+			INSERT INTO t_userTags (userId, tagId) VALUES (?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="userTag">
+		<![CDATA[
+			delete t_userTags
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byUserTagIdCondition" />
+		</dynamic>
+	</delete>
+
+	<delete id="deleteByUserIdAndTagId" parameterClass="userTag">
+		<![CDATA[
+			delete t_userTags 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: NUMBER#
+			</isNotEmpty>
+			<isNotEmpty property="tagId" prepend="AND">
+				tagId = #tagId: NUMBER#
+			</isNotEmpty>
+		</dynamic>
+	</delete>
+</sqlMap>

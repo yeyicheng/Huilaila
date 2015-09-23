@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	<bean id="userService" class="com.lhq.prj.bms.service.impl.UserService">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	
+	<bean id="rechargeService" class="com.lhq.prj.bms.service.impl.RechargeService">
+		<property name="rechargeDao" ref="rechargeDao" />
+	</bean>
+	
+	<bean id="addressService" class="com.lhq.prj.bms.service.impl.AddressService">
+		<property name="addressDao" ref="addressDao" />
+	</bean>
+	
+	<bean id="commodityService" class="com.lhq.prj.bms.service.impl.CommodityService">
+		<property name="commodityDao" ref="commodityDao" />
+	</bean>
+	
+	<bean id="cartItemService" class="com.lhq.prj.bms.service.impl.CartItemService">
+		<property name="cartItemDao" ref="cartItemDao" />
+	</bean>
+	
+	<bean id="orderService" class="com.lhq.prj.bms.service.impl.OrderService">
+		<property name="orderDao" ref="orderDao" />
+	</bean>
+	
+	<bean id="discountService" class="com.lhq.prj.bms.service.impl.DiscountService">
+		<property name="discountDao" ref="discountDao" />
+	</bean>
+	
+	<bean id="freightService" class="com.lhq.prj.bms.service.impl.FreightService">
+		<property name="freightDao" ref="freightDao" />
+	</bean>
+	
+	<bean id="feedbackService" class="com.lhq.prj.bms.service.impl.FeedbackService">
+		<property name="feedbackDao" ref="feedbackDao" />
+	</bean>
+</beans>
