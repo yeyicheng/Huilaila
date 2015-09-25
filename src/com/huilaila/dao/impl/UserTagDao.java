@@ -1,8 +1,12 @@
 package com.huilaila.dao.impl;
 
+import java.util.List;
+
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import com.huilaila.dao.IUserTagDao;
+import com.huilaila.po.Tag;
+import com.huilaila.po.User;
 import com.huilaila.po.UserTag;
 
 public class UserTagDao extends SqlMapClientDaoSupport implements IUserTagDao {
@@ -12,11 +16,11 @@ public class UserTagDao extends SqlMapClientDaoSupport implements IUserTagDao {
 	}
 
 	public Integer deleteById(UserTag userTag) {
-		return getSqlMapClientTemplate().delete("Tag.deleteById", userTag);
+		return getSqlMapClientTemplate().delete("UserTag.deleteById", userTag);
 	}
 
 	public Integer deleteByUserIdAndTagId(UserTag userTag) {
-		return getSqlMapClientTemplate().delete("Tag.deleteByUserIdAndTagId", userTag);
+		return getSqlMapClientTemplate().delete("UserTag.deleteByUserIdAndTagId",
+				userTag);
 	}
-
 }

@@ -6,23 +6,24 @@
 
 <sqlMap namespace="User">
 
-	<typeAlias alias="job" type="com.huilaila.User" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
-	<typeAlias alias="tag" type="com.huilaila.Tag" />
+	<typeAlias alias="user" type="com.huilaila.po.User" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+	<typeAlias alias="tag" type="com.huilaila.po.Tag" />
 
 	<parameterMap class="user" id="pm_user_without_id">
 		<parameter property="userName" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="email" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="emailVerification" javaType="string"
-			jdbcType="VARCHAR" />
-		<parameter property="cell" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="cellVerification" javaType="string"
-			jdbcType="VARCHAR" />
-		<parameter property="nickName" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="password" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="nickName" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="realName" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="area" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="hometown" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="cell" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="cellVerification" javaType="string"
+			jdbcType="VARCHAR" />
+		<parameter property="email" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="emailVerification" javaType="string"
+			jdbcType="VARCHAR" />
+		<parameter property="type" javaType="integer" jdbcType="INT" />
 		<parameter property="avatar" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="age" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="constellation" javaType="string"
@@ -30,22 +31,23 @@
 		<parameter property="school" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="diploma" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="major" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="jobStatus" javaType="integer" jdbcType="NUMBER" />
+		<parameter property="jobStatus" javaType="integer" jdbcType="INT" />
 		<parameter property="jobArea" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="jobIndustry" javaType="string"
 			jdbcType="VARCHAR" />
 		<parameter property="jobFunction" javaType="string"
 			jdbcType="VARCHAR" />
-		<parameter property="marriage" javaType="integer" jdbcType="NUMBER" />
+		<parameter property="marriage" javaType="integer" jdbcType="INT" />
 		<parameter property="signature" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="description" javaType="string"
 			jdbcType="VARCHAR" />
+		<parameter property="hobby" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="userVerification" javaType="integer"
-			jdbcType="NUMBER" />
+			jdbcType="INT" />
 		<parameter property="buyerVerification" javaType="integer"
-			jdbcType="NUMBER" />
-		<parameter property="longitude" javaType="long" jdbcType="NUMBER" />
-		<parameter property="latitude" javaType="long" jdbcType="NUMBER" />
+			jdbcType="INT" />
+		<parameter property="longitude" javaType="long" jdbcType="INT" />
+		<parameter property="latitude" javaType="long" jdbcType="INT" />
 		<parameter property="payAccount" javaType="string" jdbcType="VARCHAR" />
 	</parameterMap>
 	<sql id="byUserIdCondition">
@@ -60,7 +62,7 @@
 						(userName, password, nickName, realName, area, hometown, cell, cellVerification, email, 
 						emailVerification, type, avatar, age, constellation, school, diploma, major, jobStatus, 
 						jobArea, jobIndustry, jobFunction, marriage, signature, description, hobby, userVerification, 
-						buyerVerication, longitude, latitude, payAccount) 
+						buyerVerification, longitude, latitude, payAccount) 
 				 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		]]>
 		<selectKey resultClass="long">
@@ -72,7 +74,7 @@
 
 	<delete id="deleteById" parameterClass="user">
 		<![CDATA[
-			delete t_user
+			delete from t_user
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byUserIdCondition" />
@@ -111,7 +113,7 @@
 			</isNotEmpty>
 			<isNotEmpty property="type" prepend=",">
 				<![CDATA[
-					type = #type:NUMBER#
+					type = #type:INT#
 				]]>
 			</isNotEmpty>
 			<isNotEmpty property="avatar" prepend=",">
@@ -121,7 +123,7 @@
 			</isNotEmpty>
 			<isNotEmpty property="jobStatus" prepend=",">
 				<![CDATA[
-					jobStatus = #jobStatus: NUMBER#
+					jobStatus = #jobStatus: INT#
 				]]>
 			</isNotEmpty>
 			<isNotEmpty property="jobArea" prepend=",">
@@ -185,12 +187,12 @@
 			<iterate property="conditions" open="(" close=")"
 				conjunction="OR">
 				<![CDATA[
-					upper(userName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(school) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(area) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(hometown) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(age) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(constellation) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+					upper(userName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(school) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(area) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(hometown) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(age) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(constellation) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
 		    	]]>
 			</iterate>
 		</isNotEmpty>
@@ -198,20 +200,13 @@
 
 	<select id="findByPage" parameterClass="page" resultClass="user">
 		<![CDATA[
-			SELECT TOP $limit$ * FROM t_user 
-					WHERE (userId >= (SELECT MAX(userId) FROM (SELECT TOP $start$ userId FROM t_user 
+			SELECT  * FROM t_user 
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="findUserByPageCondition" />
 		</dynamic>
 		<![CDATA[
-			ORDER BY userId ) AS T)) 
-		]]>
-		<dynamic prepend="AND">
-			<include refid="findUserByPageCondition" />
-		</dynamic>
-		<![CDATA[
-			ORDER BY userId
+			ORDER BY userId limit $start$, $limit$
 		]]>
 	</select>
 
@@ -230,7 +225,8 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull property="school" prepend="AND">
-				school = #school:VARCHAR#
+				school =
+				#school:VARCHAR#
 			</isNotNull>
 		</dynamic>
 		<![CDATA[
@@ -250,23 +246,23 @@
 			SELECT * FROM t_user 
 		]]>
 		<dynamic prepend="WHERE">
-			<isNotNull property="userId" prepend="AND">
-				userId = #userId:INT#
+			<isNotNull property="userName" prepend="AND">
+				userName = #userName: VARCHAR#
 			</isNotNull>
 		</dynamic>
 	</select>
 
 	<select id="findByTag" parameterClass="tag" resultClass="user">
 		<![CDATA[
-			SELECT * FROM t_user left join t_tags on t_user.userId = t_tags.userId
+			SELECT * FROM t_user where userId in (select userId from t_userTags 
 		]]>
 		<dynamic prepend="WHERE">
-			<isNotNull property="tagId" prepend="AND">
-				tagId = #tagId: NUMBER#
-			</isNotNull>
+			<isNotEmpty property="tagId" prepend="AND">
+				tagId = #tagId: INT#
+			</isNotEmpty>
 		</dynamic>
 		<![CDATA[
-			order by rand() limit 10
+			) order by rand() limit 10
 		]]>
 	</select>
 

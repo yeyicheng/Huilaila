@@ -3,6 +3,7 @@ package com.huilaila.service.impl;
 import java.util.List;
 
 import com.huilaila.dao.IUserDao;
+import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 import com.huilaila.service.IUserService;
 import com.huilaila.core.Page;
@@ -53,8 +54,8 @@ public class UserService implements IUserService {
 		return userDao.findByLocation(user);
 	}
 
-	public List findByTag(User user) {
-		return userDao.findByTag(user);
+	public List findByTag(Tag tag) {
+		return userDao.findByTag(tag);
 	}
 
 	public List findBySchool(User user) {

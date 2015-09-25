@@ -2,6 +2,7 @@ package com.huilaila.service;
 
 import java.util.List;
 
+import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 import com.huilaila.core.Page;
 
@@ -20,7 +21,7 @@ public interface IUserService {
 
 	public List findByLocation(User user);
 
-	public List findByTag(User user);
+	public List findByTag(Tag tag);
 
 	public List findBySchool(User user);
 }

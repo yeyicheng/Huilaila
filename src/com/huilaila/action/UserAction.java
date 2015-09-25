@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.huilaila.core.BaseAction;
 import com.huilaila.core.Page;
+import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 import com.huilaila.service.IUserService;
 import com.huilaila.utils.MyMD5Util;
@@ -29,6 +30,8 @@ public class UserAction extends BaseAction {
 
 	private String oldPwd;
 
+	private Tag tag;
+	
 	public String logout() {
 		getSession().removeAttribute("currUser");
 		success = true;
@@ -57,29 +60,38 @@ public class UserAction extends BaseAction {
 		return SUCCESS;
 	}
 
-	public String register() {
-		System.out.println("begin action");
+	public String register() throws NoSuchAlgorithmException,
+			UnsupportedEncodingException {
+		System.out.println("===UserAction.register===");
+		List<User> _userInDb = (List<User>) userService.findByExample(user);
+		if (_userInDb != null && !_userInDb.isEmpty()) {
+			setTip("用户名已存在！");
+			setSuccess(false);
+			return SUCCESS;
+		}
+		user.setPassword(MyMD5Util.getEncryptedPwd(user.getPassword()));
 		Long userId = (Long) userService.saveUser(user);
-		return (userId != null) ? SUCCESS : ERROR;
+		success = userId != null;
+		return SUCCESS;
 	}
 
-	/**
-	 * 添加用户
-	 * 
-	 * @return
-	 */
-	public String saveUser() {
+	public String saveUser() throws NoSuchAlgorithmException,
+			UnsupportedEncodingException {
+		System.out.println("===UserAction.register===");
+		List<User> _userInDb = (List<User>) userService.findByExample(user);
+		if (_userInDb != null && !_userInDb.isEmpty()) {
+			setTip("用户名已存在！");
+			setSuccess(false);
+			return SUCCESS;
+		}
+		user.setPassword(MyMD5Util.getEncryptedPwd(user.getPassword()));
 		Long userId = (Long) userService.saveUser(user);
-		return userId != null ? SUCCESS : ERROR;
+		success = userId != null;
+		return SUCCESS;
 	}
 
-	/**
-	 * 查找用户信息
-	 * 
-	 * @return
-	 */
 	public String findAllUser() {
-		System.out.println("===");
+		System.out.println("===UserAction.findAllUser===");
 		String strCondition = getRequest().getParameter("conditions");
 		List<String> conditions = new ArrayList<String>();
 		MyUtils.addToCollection(conditions, MyUtils.split(strCondition, " ,"));
@@ -96,25 +108,44 @@ public class UserAction extends BaseAction {
 		pageBean.setConditions(utf8Condition);
 		int start = Integer.valueOf(getRequest().getParameter("start"));
 		int limit = Integer.valueOf(getRequest().getParameter("limit"));
-		pageBean.setStart(++start);
 		pageBean.setLimit(limit = limit == 0 ? 20 : limit);
 		pageBean = userService.findByPage(pageBean);
+		pageBean.setSuccess(true);
 		return SUCCESS;
 	}
 
 	public String findByExample() {
+		System.out.println("===UserAction.findByExample===");
 		pageBean = new Page();
-		pageBean.setRoot(userService.findByExample(user));
+		List users = userService.findByExample(user);
+		if (null == users) {
+			success = false;
+		} else {
+			pageBean.setRoot(users);
+			pageBean.setTotalProperty(users.size());
+			pageBean.setSuccess(true);
+		}
+		return SUCCESS;
+	}
+	
+	public String findByTag() {
+		System.out.println("===UserAction.findByTag===");
+		pageBean = new Page();
+		List users = userService.findByTag(tag);
+		if (null == users) {
+			success = false;
+		} else {
+			pageBean.setRoot(users);
+			pageBean.setTotalProperty(users.size());
+			pageBean.setSuccess(true);
+		}
 		return SUCCESS;
 	}
 
-	/**
-	 * 删除用户
-	 * 
-	 * @return
-	 */
 	public String deleteUser() {
-		return userService.deleteUser(user) ? SUCCESS : ERROR;
+		System.out.println("===UserAction.deleteUser===");
+		success = userService.deleteUser(user);
+		return SUCCESS;
 	}
 
 	/**
@@ -126,7 +157,9 @@ public class UserAction extends BaseAction {
 	public String updateUser() throws Exception {
 		User currUser = (User) getSession().getAttribute("currUser");
 		if (currUser == null) {
-			return ERROR;
+			setTip("请登录后操作!");
+			setSuccess(false);
+			return SUCCESS;
 		}
 		if (user != null) {
 			// System.out.println(user.getPassword());
@@ -143,8 +176,10 @@ public class UserAction extends BaseAction {
 			} else {
 				success = userService.updateUser(user);
 			}
+		} else {
+			success = false;
 		}
-		return success ? SUCCESS : ERROR;
+		return SUCCESS;
 	}
 
 	public Page getPageBean() {
@@ -189,6 +224,14 @@ public class UserAction extends BaseAction {
 
 	public void setOldPwd(String oldPwd) {
 		this.oldPwd = oldPwd;
+	}
+
+	public Tag getTag() {
+		return tag;
+	}
+
+	public void setTag(Tag tag) {
+		this.tag = tag;
 	}
 
 }

@@ -6,27 +6,17 @@
 <struts>
 	<include file="struts-default.xml" />
 
-	<package name="my-default" extends="json-default">
-		<interceptors><!-- 定义权限控制拦截器 -->
-			<interceptor name="loginInteceptor"
-				class="com.huilaila.interceptor.LoginInterceptor">
-				<param name="excludeMethods">login,regist</param>
-			</interceptor><!-- 定义一个包含权限控制的拦截器栈 -->
-			<interceptor-stack name="mydefault">
-				<interceptor-ref name="loginInteceptor" />
-				<interceptor-ref name="defaultStack" />
-			</interceptor-stack>
-		</interceptors><!-- 定义默认拦截器 -->
-		<default-interceptor-ref name="mydefault" /><!-- 
-			定义全局处理结果 -->
-		<global-results><!-- 逻辑名为login的结果，映射到/index.jsp页面 -->
-			<result name="login">/index.jsp</result>
-			<result name="error">/index.jsp</result>
-		</global-results>
-	</package>
+	<!-- <package name="my-default" extends="json-default"> <interceptors>定义权限控制拦截器 
+		<interceptor name="loginInteceptor" class="com.huilaila.interceptor.LoginInterceptor"> 
+		<param name="excludeMethods">login,regist</param> </interceptor>定义一个包含权限控制的拦截器栈 
+		<interceptor-stack name="mydefault"> <interceptor-ref name="loginInteceptor" 
+		/> <interceptor-ref name="defaultStack" /> </interceptor-stack> </interceptors>定义默认拦截器 
+		<default-interceptor-ref name="mydefault" /> 定义全局处理结果 <global-results>逻辑名为login的结果，映射到/index.jsp页面 
+		<result name="login">/index.jsp</result> <result name="error">/index.jsp</result> 
+		</global-results> </package> -->
 
 
-	<package name="json" extends="my-default">
+	<package name="json" extends="json-default">
 		<!-- 商品管理 -->
 		<action name="saveCommodity" class="commodityAction" method="saveCommodity">
 			<!-- <interceptor-ref name="loginInteceptor"></interceptor-ref> -->
@@ -86,70 +76,94 @@
 		<!-- 用户管理 -->
 		<action name="saveUser" class="userAction" method="saveUser">
 			<result type="json">
-				<param name="includeProperties">success,userId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="deleteUser" class="userAction" method="deleteUser">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="updateUser" class="userAction" method="updateUser">
 			<result type="json">
-				<param name="includeProperties">success,tip</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="findAllUser" class="userAction" method="findAllUser">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+				<param name="excludeProperties">user, tag, oldPwd, objCondition, userId</param>
 			</result>
 		</action>
 		<action name="findUserByExample" class="userAction" method="findByExample">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+				<param name="excludeProperties">user, tag, oldPwd, objCondition, userId,
+					conditions</param>
 			</result>
 		</action>
 		<action name="login" class="userAction" method="login">
-			<result>main.jsp</result>
-			<result name="input">login.jsp</result>
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
 		</action>
 		<action name="logout" class="userAction" method="logout">
-			<result type="redirect">login.jsp</result>
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
 		</action>
-		<action name="regist" class="userAction" method="register">
-			<result name="success">login.jsp</result>
-			<result name="error">register.jsp</result>
+		<action name="register" class="userAction" method="register">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findUsersByTag" class="userAction" method="findByTag">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">user, tag, oldPwd, objCondition, userId,
+					conditions</param>
+			</result>
 		</action>
 
 		<!-- 标签管理 -->
 		<action name="saveTag" class="tagAction" method="saveTag">
 			<result type="json">
-				<param name="includeProperties">success,tagId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="deleteTag" class="tagAction" method="deleteTag">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findTags" class="tagAction" method="findTags">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">tag, oldPwd, objCondition, userId, conditions</param>
+			</result>
+		</action>
+		<action name="findTagsByUser" class="tagAction" method="findByUser">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">tag, user</param>
 			</result>
 		</action>
 
 		<!-- 用户标签管理 -->
 		<action name="saveUserTag" class="userTagAction" method="saveUserTag">
 			<result type="json">
-				<param name="includeProperties">success,addressId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="deleteUserTag" class="userTagAction" method="deleteUserTag">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="deleteUserTagByUserIdAndTagId" class="userTagAction"
 			method="deleteUserTagByUserIdAndTagId">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 
@@ -157,60 +171,50 @@
 		<action name="saveJob" class="jobAction" method="saveJob">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
 			</result>
 		</action>
 		<action name="updateJob" class="jobAction" method="updateJob">
 			<result type="json">
-				<param name="includeProperties">success</param>
 			</result>
 		</action>
 		<action name="findAllJob" class="jobAction" method="findAllJob">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
 			</result>
 		</action>
 		<action name="deleteJob" class="jobAction" method="deleteJob">
 			<result type="json">
-				<param name="includeProperties">success</param>
 			</result>
 		</action>
-		<action name="findByExample" class="jobAction" method="findByExample">
+		<action name="findJobByExample" class="jobAction" method="findByExample">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
 			</result>
 		</action>
 
 		<!-- 公司管理 -->
 		<action name="saveCompany" class="companyAction" method="saveCompany">
 			<result type="json">
-				<param name="includeProperties">success, companyId, tip</param>
 			</result>
 			<result name="error">/index.jsp</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="deleteCompany">
 			<result type="json">
-				<param name="includeProperties">success</param>
 			</result>
 		</action>
 		<action name="updateCompany" class="companyAction" method="updateCompany">
 			<result type="json">
-				<param name="includeProperties">success</param>
 			</result>
 		</action>
 		<action name="findAllCompany" class="companyAction" method="findAllCompany">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
 			</result>
 		</action>
 		<action name="findCompanyByExample" class="companyAction"
 			method="findByExample">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
 			</result>
 		</action>
 		<!-- <action name="orderExport" class="orderAction"> <result name="success" 

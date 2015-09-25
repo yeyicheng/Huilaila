@@ -7,11 +7,11 @@
 <sqlMap namespace="Resume">
 
 	<typeAlias alias="resume" type="com.huilaila.po.Resume" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="resume" id="pm_resume_without_id">
 		<parameter property="resumeName" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="userId" javaType="long" jdbcType="INT" />
 		<parameter property="resumeUrl" javaType="string" jdbcType="VARCHAR" />
 	</parameterMap>
 
@@ -34,7 +34,7 @@
 
 	<delete id="deleteById" parameterClass="resume">
 		<![CDATA[
-			delete t_resumes
+			delete from t_resumes
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byResumeIdCondition" />
@@ -76,20 +76,13 @@
 
 	<select id="findByPage" parameterClass="page" resultClass="resume">
 		<![CDATA[
-			SELECT TOP $limit$ * FROM t_resumes t1 left join t_user t2 on t1.userId = t2.userId 
-					WHERE (resumeId >= (SELECT MAX(resumeId) FROM (SELECT TOP $start$ resumeId FROM t_resumes 
+			SELECT * FROM t_resumes t1 left join t_user t2 on t1.userId = t2.userId 
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="findResumeByPageCondition" />
 		</dynamic>
 		<![CDATA[
-			ORDER BY resumeId ) AS T)) 
-		]]>
-		<dynamic prepend="AND">
-			<include refid="findResumeByPageCondition" />
-		</dynamic>
-		<![CDATA[
-			ORDER BY resumeId
+			ORDER BY resumeId limit $start$, $limit$
 		]]>
 	</select>
 
@@ -112,7 +105,7 @@
 				resumeName = #resumeName: VARCHAR#
 			</isNotEmpty>
 			<isNotEmpty property="userId" prepend="OR">
-				userId = #userId: NUMBER#
+				userId = #userId: INT#
 			</isNotEmpty>
 		</dynamic>
 	</select>

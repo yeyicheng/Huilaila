@@ -19,15 +19,18 @@ public class UserTagAction extends BaseAction {
 
 	public String saveUserTag() {
 		Long userTagId = (Long) userTagService.saveUserTag(userTag);
-		return userTagId != null ? SUCCESS : ERROR;
+		success = userTagId != null;
+		return SUCCESS;
 	}
 
 	public String deleteUserTag() {
-		return userTagService.deleteUserTag(userTag) ? SUCCESS : ERROR;
+		success = userTagService.deleteUserTag(userTag);
+		return SUCCESS;
 	}
 
 	public String deleteUserTagByUserIdAndTagId() {
-		return userTagService.deleteByUserIdAndTagId(userTag) ? SUCCESS : ERROR;
+		success = userTagService.deleteByUserIdAndTagId(userTag);
+		return SUCCESS;
 	}
 
 	public boolean isSuccess() {

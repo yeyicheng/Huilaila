@@ -6,6 +6,7 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import com.huilaila.core.Page;
 import com.huilaila.dao.IUserDao;
+import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 
 public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
@@ -46,8 +47,8 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 				user);
 	}
 
-	public List findByTag(User user) {
-		return getSqlMapClientTemplate().queryForList("User.findByTag", user);
+	public List findByTag(Tag tag) {
+		return getSqlMapClientTemplate().queryForList("User.findByTag", tag);
 	}
 
 	public List findBySchool(User user) {

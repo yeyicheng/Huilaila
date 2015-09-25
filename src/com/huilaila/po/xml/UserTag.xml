@@ -7,11 +7,11 @@
 <sqlMap namespace="UserTag">
 
 	<typeAlias alias="userTag" type="com.huilaila.po.UserTag" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="userTag" id="pm_userTag_without_id">
-		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
-		<parameter property="tagId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="tagId" javaType="long" jdbcType="INT" />
 	</parameterMap>
 
 	<sql id="byUserTagIdCondition">
@@ -33,7 +33,7 @@
 
 	<delete id="deleteById" parameterClass="userTag">
 		<![CDATA[
-			delete t_userTags
+			delete from t_userTags
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byUserTagIdCondition" />
@@ -42,15 +42,44 @@
 
 	<delete id="deleteByUserIdAndTagId" parameterClass="userTag">
 		<![CDATA[
-			delete t_userTags 
+			delete from t_userTags 
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty property="userId" prepend="AND">
-				userId = #userId: NUMBER#
+				userId = #userId:
+				INT#
 			</isNotEmpty>
 			<isNotEmpty property="tagId" prepend="AND">
-				tagId = #tagId: NUMBER#
+				tagId = #tagId: INT#
 			</isNotEmpty>
 		</dynamic>
 	</delete>
+
+	<select id="findUsersFromTag" parameterClass="tag" resultClass="user">
+		<![CDATA[
+			select * from t_user where userId in (select userId from t_userTags 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="tagId" prepend="AND">
+				tagId = #tagId: INT#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+			limit 10)
+		]]>
+	</select>
+
+	<select id="findTagsFromUser" parameterClass="user" resultClass="tag">
+		<![CDATA[
+			select * from t_tags where tagId in (select tagId from t_userTags 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+			)
+		]]>
+	</select>
 </sqlMap>

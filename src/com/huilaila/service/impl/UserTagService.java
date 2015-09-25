@@ -27,5 +27,4 @@ public class UserTagService implements IUserTagService {
 	public boolean deleteByUserIdAndTagId(UserTag userTag) {
 		return userTagDao.deleteByUserIdAndTagId(userTag) != null;
 	}
-
 }

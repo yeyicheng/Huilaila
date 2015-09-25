@@ -6,13 +6,13 @@
 
 <sqlMap namespace="JobApplication">
 	<typeAlias alias="jobApplication" type="com.huilaila.po.JobApplication" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="jobApplication" id="pm_jobApplication_without_id">
-		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
-		<parameter property="jobId" javaType="long" jdbcType="NUMBER" />
-		<parameter property="resumeId" javaType="long" jdbcType="NUMBER" />
-		<parameter property="state" javaType="integer" jdbcType="NUMBER" />
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="jobId" javaType="long" jdbcType="INT" />
+		<parameter property="resumeId" javaType="long" jdbcType="INT" />
+		<parameter property="state" javaType="integer" jdbcType="INT" />
 	</parameterMap>
 
 	<sql id="byJobApplicationIdCondition">
@@ -34,7 +34,7 @@
 
 	<delete id="deleteById" parameterClass="jobApplication">
 		<![CDATA[
-			delete t_jobApplications
+			delete from t_jobApplications
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byJobApplicationIdCondition" />
@@ -48,12 +48,12 @@
 		<dynamic prepend="SET">
 			<isNotEmpty property="state" prepend=",">
 				<![CDATA[
-					state = #state: NUMBER#
+					state = #state: INT#
 				]]>
 			</isNotEmpty>
 		</dynamic>
 		<dynamic prepend="WHERE">
-			<include refid="byResumeIdCondition" />
+			<include refid="byJobApplicationIdCondition" />
 		</dynamic>
 	</update>
 
@@ -65,10 +65,10 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull property="companyId" prepend="AND">
-				companyId = #companyId: NUMBER#
+				companyId = #companyId: INT#
 			</isNotNull>
 			<isNotNull property="userId" prepend="AND">
-				userId = #userId: NUMBER#
+				userId = #userId: INT#
 			</isNotNull>
 		</dynamic>
 	</select>

@@ -5,9 +5,9 @@
     "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="Tag">
-
+	<typeAlias alias="user" type="com.huilaila.po.User" />
 	<typeAlias alias="tag" type="com.huilaila.po.Tag" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="tag" id="pm_tag_without_id">
 		<parameter property="tag" javaType="string" jdbcType="VARCHAR" />
@@ -32,10 +32,30 @@
 
 	<delete id="deleteById" parameterClass="tag">
 		<![CDATA[
-			delete t_tags
+			delete from t_tags
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byTagIdCondition" />
 		</dynamic>
 	</delete>
+
+	<select id="findTags" resultClass="tag">
+		<![CDATA[
+			select * from t_tags order by rand() limit 10
+		]]>
+	</select>
+
+	<select id="findByUser" parameterClass="user" resultClass="tag">
+		<![CDATA[
+			select * from t_tags where tagId in (select tagId from t_userTags 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+			)
+		]]>
+	</select>
 </sqlMap>

@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 
 <%
 	String path = request.getContextPath();
@@ -23,27 +23,10 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 </head>
-<script>
-	function check() {
-		var frm = document.form1;
-		if (frm.userName.value == "") {
-			alert("用户名不能为空!");
-			document.form1.userName.focus();
-			return false;
-		} else if (frm.password.value == "") {
-			alert("登录密码不能为空!");
-			frm.password.focus();
-			return false;
-		} else {
-			return true;
-		}
-	}
-</script>
 <body>
-<s:form action="login.do" method="post">
-	<s:textfield name="userName" label="用户名" value="h"></s:textfield>
-	<s:password name="password" label="密码" value="123"></s:password>
-	<s:submit value="注册"></s:submit>
-</s:form>
-</body>	
+	<s:form action="saveTag.action" method="post">
+		<s:textfield name="tag.tag" label="标签" value="90后"></s:textfield>
+		<s:submit value="添加"></s:submit>
+	</s:form>
+</body>
 </html>

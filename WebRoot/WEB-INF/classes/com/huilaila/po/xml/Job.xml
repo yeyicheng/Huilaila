@@ -6,19 +6,19 @@
 
 <sqlMap namespace="Job">
 
-	<typeAlias alias="job" type="com.huilaila.Job" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+	<typeAlias alias="job" type="com.huilaila.po.Job" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="job" id="pm_job_without_id">
 		<parameter property="jobTitle" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="companyId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="companyId" javaType="long" jdbcType="INT" />
 		<parameter property="description" javaType="string"
 			jdbcType="VARCHAR" />
 		<parameter property="function" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="userId" javaType="long" jdbcType="INT" />
 		<parameter property="contact" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="verification" javaType="integer"
-			jdbcType="NUMBER" />
+			jdbcType="INT" />
 	</parameterMap>
 	<sql id="byJobIdCondition">
 		<![CDATA[
@@ -41,7 +41,7 @@
 
 	<delete id="deleteById" parameterClass="job">
 		<![CDATA[
-			delete t_jobs
+			delete from t_jobs
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byJobIdCondition" />
@@ -100,20 +100,13 @@
 
 	<select id="findByPage" parameterClass="page" resultClass="job">
 		<![CDATA[
-			SELECT TOP $limit$ * FROM t_jobs t1 left join t_companys t2 on t1.companyId = t2.companyId 
-					WHERE (jobId >= (SELECT MAX(jobId) FROM (SELECT TOP $start$ jobId FROM t_jobs 
+			SELECT * FROM t_jobs t1 left join t_companys t2 on t1.companyId = t2.companyId 
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="findJobByPageCondition" />
 		</dynamic>
 		<![CDATA[
-			ORDER BY jobId ) AS T)) 
-		]]>
-		<dynamic prepend="AND">
-			<include refid="findJobByPageCondition" />
-		</dynamic>
-		<![CDATA[
-			ORDER BY jobId
+			ORDER BY jobId limit $start$, $limit$
 		]]>
 	</select>
 
@@ -136,7 +129,7 @@
 				jobTitle = #jobTitle: VARCHAR#		 
 			</isNotEmpty>
 			<isNotEmpty property="companyId" prepend="AND">
-				companyId = #companyId: NUMBER#
+				companyId = #companyId: INT#
 			</isNotEmpty>
 			<isNotEmpty property="description" prepend="AND">
 				description LIKE '%' + #description: VARCHAR# + '%'
@@ -148,7 +141,7 @@
 				contact = #contact: VARCHAR#
 			</isNotEmpty>
 			<isNotEmpty property="verification" prepend="AND">
-				verification = #verification: NUMBER#
+				verification = #verification: INT#
 			</isNotEmpty>
 		</dynamic>
 	</select>

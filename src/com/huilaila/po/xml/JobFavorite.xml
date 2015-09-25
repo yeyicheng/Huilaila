@@ -7,10 +7,10 @@
 <sqlMap namespace="JobFavorite">
 
 	<typeAlias alias="jobFavorite" type="com.huilaila.po.JobFavorite" />
-	<typeAlias alias="page" type="com.lhq.prj.bms.core.Page" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="jobFavorite" id="pm_jobFavorite_without_id">
-		<parameter property="userId" javaType="long" jdbcType="NUMBER" />
+		<parameter property="userId" javaType="long" jdbcType="INT" />
 		<parameter property="jobId" javaType="string" jdbcType="VARCHAR" />
 	</parameterMap>
 
@@ -33,7 +33,7 @@
 
 	<delete id="deleteById" parameterClass="jobFavorite">
 		<![CDATA[
-			delete t_jobFavorites
+			delete from t_jobFavorites
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="byJobFavoriteIdCondition" />
