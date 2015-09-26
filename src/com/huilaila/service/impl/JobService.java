@@ -3,6 +3,7 @@ package com.huilaila.service.impl;
 import java.util.List;
 
 import com.huilaila.dao.IJobDao;
+import com.huilaila.po.Company;
 import com.huilaila.po.Job;
 import com.huilaila.service.IJobService;
 import com.huilaila.core.Page;
@@ -39,6 +40,10 @@ public class JobService implements IJobService {
 
 	public List findByExample(Job job) {
 		return jobDao.findByExample(job);
+	}
+
+	public List findByCompany(Company company) {
+		return jobDao.findByCompany(company);
 	}
 
 }

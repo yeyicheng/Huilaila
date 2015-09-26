@@ -5,7 +5,7 @@
     "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="Job">
-
+	<typeAlias alias="company" type="com.huilaila.po.Company" />
 	<typeAlias alias="job" type="com.huilaila.po.Job" />
 	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
@@ -89,10 +89,10 @@
 			<iterate property="conditions" open="(" close=")"
 				conjunction="OR">
 				<![CDATA[
-					upper(jobTitle) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(descritpion) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(function) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(companyName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+					upper(jobTitle) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#) , '%')
+				    OR upper(description) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#) , '%')
+				    OR upper(function) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#) , '%')
+				    OR upper(companyName) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#) , '%')
 		    	]]>
 			</iterate>
 		</isNotEmpty>
@@ -126,22 +126,37 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty property="jobTitle" prepend="AND">
-				jobTitle = #jobTitle: VARCHAR#		 
+				jobTitle like
+				CONCAT('%', #jobTitle: VARCHAR#, '%')
 			</isNotEmpty>
 			<isNotEmpty property="companyId" prepend="AND">
-				companyId = #companyId: INT#
+				companyId =
+				#companyId: INT#
 			</isNotEmpty>
 			<isNotEmpty property="description" prepend="AND">
-				description LIKE '%' + #description: VARCHAR# + '%'
+				description
+				LIKE CONCAT('%', #description: VARCHAR#, '%')
 			</isNotEmpty>
 			<isNotEmpty property="function" prepend="AND">
-				function = #function: VARCHAR#
+				function =
+				#function: VARCHAR#
 			</isNotEmpty>
 			<isNotEmpty property="contact" prepend="AND">
-				contact = #contact: VARCHAR#
+				contact = #contact:
+				VARCHAR#
 			</isNotEmpty>
 			<isNotEmpty property="verification" prepend="AND">
-				verification = #verification: INT#
+				verification =
+				#verification: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="findByCompany" parameterClass="company" resultClass="job">
+		select * from t_jobs
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="companyId">
+				companyId = #companyId: INT#
 			</isNotEmpty>
 		</dynamic>
 	</select>

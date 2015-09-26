@@ -26,12 +26,14 @@ public class CompanyAction extends BaseAction {
 	private String tip;
 
 	public String saveCompany() {
+		System.out.println("===CompanyAction.saveCompany===");
 		Long companyId = (Long) companyService.saveCompany(company);
-		return companyId != null ? SUCCESS : ERROR;
+		success = companyId != null;
+		return SUCCESS;
 	}
 
 	public String findAllCompany() {
-		System.out.println("===");
+		System.out.println("===CompanyAction.findAllCompany===");
 		String strCondition = getRequest().getParameter("conditions");
 		List<String> conditions = new ArrayList<String>();
 		MyUtils.addToCollection(conditions, MyUtils.split(strCondition, " ,"));
@@ -46,35 +48,43 @@ public class CompanyAction extends BaseAction {
 		}
 		pageBean = new Page();
 		pageBean.setConditions(utf8Condition);
-		int start = Integer.valueOf(getRequest().getParameter("start"));
-		int limit = Integer.valueOf(getRequest().getParameter("limit"));
-		pageBean.setStart(++start);
-		pageBean.setLimit(limit = limit == 0 ? 20 : limit);
+		String start = getRequest().getParameter("start");
+		String limit = getRequest().getParameter("limit");
+		int startInt = start != null ? Integer.parseInt(start) : 0;
+		int limitInt = limit != null ? Integer.parseInt(limit) : 10;
+		pageBean.setStart(startInt);
+		pageBean.setLimit(limitInt);
 		pageBean = companyService.findByPage(pageBean);
+		pageBean.setSuccess(true);
 		return SUCCESS;
 	}
 
 	public String findByExample() {
+		System.out.println("===CompanyAction.findByExample===");
 		pageBean = new Page();
-		pageBean.setRoot(companyService.findByExample(company));
+		List companys = companyService.findByExample(company);
+		if (companys != null) {
+			pageBean.setRoot(companys);
+			pageBean.setTotalProperty(companys.size());
+			pageBean.setSuccess(true);
+			success = true;
+		}
 		return SUCCESS;
 	}
 
 	public String deleteCompany() {
-		return companyService.deleteById(company) ? SUCCESS : ERROR;
+		System.out.println("===CompanyAction.deleteCompany===");
+		success = companyService.deleteById(company);
+		return SUCCESS;
 	}
 
 	public String updateCompany() throws Exception {
-		Company currUser = (Company) getSession().getAttribute("currUser");
-		if (currUser == null) {
-			return ERROR;
-		}
 		if (company != null) {
 			success = companyService.update(company);
 		} else {
 			success = false;
 		}
-		return success ? SUCCESS : ERROR;
+		return SUCCESS;
 	}
 
 	public Page getPageBean() {

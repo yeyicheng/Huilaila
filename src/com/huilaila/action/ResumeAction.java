@@ -26,12 +26,14 @@ public class ResumeAction extends BaseAction {
 	private String tip;
 
 	public String saveResume() {
+		System.out.println("===ResumeAction.saveResume===");
 		Long resumeId = (Long) resumeService.saveResume(resume);
-		return resumeId != null ? SUCCESS : ERROR;
+		success = resumeId != null;
+		return SUCCESS;
 	}
 
 	public String findAllResume() {
-		System.out.println("===");
+		System.out.println("===ResumeAction.findAllResume===");
 		String strCondition = getRequest().getParameter("conditions");
 		List<String> conditions = new ArrayList<String>();
 		MyUtils.addToCollection(conditions, MyUtils.split(strCondition, " ,"));
@@ -46,35 +48,45 @@ public class ResumeAction extends BaseAction {
 		}
 		pageBean = new Page();
 		pageBean.setConditions(utf8Condition);
-		int start = Integer.valueOf(getRequest().getParameter("start"));
-		int limit = Integer.valueOf(getRequest().getParameter("limit"));
-		pageBean.setStart(++start);
-		pageBean.setLimit(limit = limit == 0 ? 20 : limit);
+		String start = getRequest().getParameter("start");
+		String limit = getRequest().getParameter("limit");
+		int startInt = start != null ? Integer.parseInt(start) : 0;
+		int limitInt = limit != null ? Integer.parseInt(limit) : 10;
+		pageBean.setStart(startInt);
+		pageBean.setLimit(limitInt);
 		pageBean = resumeService.findByPage(pageBean);
+		pageBean.setSuccess(true);
 		return SUCCESS;
 	}
 
 	public String findByExample() {
+		System.out.println("===ResumeAction.findByExample===");
 		pageBean = new Page();
-		pageBean.setRoot(resumeService.findByExample(resume));
+		List resumes = resumeService.findByExample(resume);
+		if (resumes != null) {
+			pageBean.setRoot(resumes);
+			pageBean.setTotalProperty(resumes.size());
+			pageBean.setSuccess(true);
+		} else {
+			pageBean.setSuccess(false);
+		}
 		return SUCCESS;
 	}
 
 	public String deleteResume() {
-		return resumeService.deleteResume(resume) ? SUCCESS : ERROR;
+		System.out.println("===ResumeAction.deleteResume===");
+		success = resumeService.deleteResume(resume);
+		return SUCCESS;
 	}
 
 	public String updateResume() throws Exception {
-		Resume currUser = (Resume) getSession().getAttribute("currUser");
-		if (currUser == null) {
-			return ERROR;
-		}
+		System.out.println("===ResumeAction.updateResume===");
 		if (resume != null) {
 			success = resumeService.updateResume(resume);
 		} else {
 			success = false;
 		}
-		return success ? SUCCESS : ERROR;
+		return SUCCESS;
 	}
 
 	public Page getPageBean() {

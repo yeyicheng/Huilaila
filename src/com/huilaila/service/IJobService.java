@@ -2,6 +2,7 @@ package com.huilaila.service;
 
 import java.util.List;
 
+import com.huilaila.po.Company;
 import com.huilaila.po.Job;
 import com.huilaila.core.Page;
 
@@ -15,4 +16,6 @@ public interface IJobService {
 	public boolean deleteJob(Job job);
 
 	public List findByExample(Job job);
+
+	public List findByCompany(Company company);
 }

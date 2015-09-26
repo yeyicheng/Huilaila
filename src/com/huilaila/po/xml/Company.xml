@@ -10,16 +10,16 @@
 	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="company" id="pm_company_without_id">
-		<parameter property="companyTitle" javaType="string"
+		<parameter property="companyName" javaType="string"
 			jdbcType="VARCHAR" />
-		<parameter property="companyId" javaType="long" jdbcType="INT" />
 		<parameter property="description" javaType="string"
 			jdbcType="VARCHAR" />
-		<parameter property="function" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="companyId" javaType="long" jdbcType="INT" />
+		<parameter property="industry" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="location" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="contact" javaType="string" jdbcType="VARCHAR" />
-		<parameter property="verification" javaType="integer"
-			jdbcType="INT" />
+		<parameter property="cell" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="code" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="licence" javaType="string" jdbcType="VARCHAR" />
 	</parameterMap>
 	<sql id="byCompanyIdCondition">
 		<![CDATA[
@@ -30,8 +30,8 @@
 	<insert id="save" parameterMap="pm_company_without_id">
 		<![CDATA[
 			INSERT INTO t_companys 
-						(companyTitle, companyId, description, function, companyId, contact, verification) 
-				 VALUES (?, ?, ?, ?, ?, ?, ?)
+						(companyName, description, industry, location, contact, cell, code, licence) 
+				 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 		]]>
 		<selectKey resultClass="long">
 			<![CDATA[
@@ -54,9 +54,9 @@
 			UPDATE t_companys
 		]]>
 		<dynamic prepend="SET">
-			<isNotEmpty property="companyTitle" prepend=",">
+			<isNotEmpty property="companyName" prepend=",">
 				<![CDATA[
-					companyTitle = #companyTitle:VARCHAR#
+					companyName = #companyName:VARCHAR#
 				]]>
 			</isNotEmpty>
 			<isNotEmpty property="description" prepend=",">
@@ -64,9 +64,9 @@
 					description = #description:VARCHAR#
 				]]>
 			</isNotEmpty>
-			<isNotEmpty property="function" prepend=",">
+			<isNotEmpty property="industry" prepend=",">
 				<![CDATA[
-					function = #function:VARCHAR#
+					industry = #industry#
 				]]>
 			</isNotEmpty>
 			<isNotEmpty property="contact" prepend=",">
@@ -74,9 +74,24 @@
 					contact = #contact:VARCHAR#
 				]]>
 			</isNotEmpty>
-			<isNotEmpty property="verification" prepend=",">
+			<isNotEmpty property="location" prepend=",">
 				<![CDATA[
-					verification = #verification:VARCHAR#
+					location = #location: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="cell" prepend=",">
+				<![CDATA[
+					cell = #cell: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="code" prepend=",">
+				<![CDATA[
+					code = #code: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="licence" prepend=",">
+				<![CDATA[
+					licence = #licence: VARCHAR#
 				]]>
 			</isNotEmpty>
 		</dynamic>
@@ -100,7 +115,7 @@
 
 	<select id="findByPage" parameterClass="page" resultClass="company">
 		<![CDATA[
-			SELECT * FROM t_companys t1 left join t_companys t2 on t1.companyId = t2.companyId 
+			SELECT * FROM t_companys t1 
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="findCompanyByPageCondition" />
@@ -112,7 +127,7 @@
 
 	<select id="findByCount" parameterClass="page" resultClass="int">
 		<![CDATA[
-			SELECT COUNT(*) FROM t_companys left join t_companys t2 on t1.companyId = t2.companyId 
+			SELECT COUNT(*) FROM t_companys 
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="findCompanyByPageCondition" />
@@ -126,13 +141,20 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty property="industry" prepend="AND">
-				industry = #industry: VARCHAR#
+				industry =
+				#industry: VARCHAR#
 			</isNotEmpty>
 			<isNotEmpty property="location" prepend="AND">
-				location = #location: VARCHAR#
+				location =
+				#location: VARCHAR#
 			</isNotEmpty>
 			<isNotEmpty property="companyName" prepend="AND">
-				companyName LIKE '%' + #companyName: VARCHAR# + '%'
+				companyName
+				LIKE CONCAT('%', #companyName: VARCHAR#, '%')
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend="AND">
+				description
+				LIKE CONCAT('%', #description: VARCHAR#, '%')
 			</isNotEmpty>
 		</dynamic>
 	</select>

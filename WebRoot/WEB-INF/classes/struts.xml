@@ -170,51 +170,65 @@
 		<!-- 职位管理 -->
 		<action name="saveJob" class="jobAction" method="saveJob">
 			<result type="json">
-				<param name="root">pageBean</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="updateJob" class="jobAction" method="updateJob">
 			<result type="json">
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="findAllJob" class="jobAction" method="findAllJob">
 			<result type="json">
 				<param name="root">pageBean</param>
+				<param name="excludeProperties">objCondition, userId, tag</param>
 			</result>
 		</action>
 		<action name="deleteJob" class="jobAction" method="deleteJob">
 			<result type="json">
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="findJobByExample" class="jobAction" method="findByExample">
 			<result type="json">
 				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId, tag</param>
+			</result>
+		</action>
+		<action name="findJobByCompany" class="jobAction" method="findByCompany">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId, tag</param>
 			</result>
 		</action>
 
 		<!-- 公司管理 -->
 		<action name="saveCompany" class="companyAction" method="saveCompany">
 			<result type="json">
+				<param name="includeProperties">success, tip</param>
 			</result>
-			<result name="error">/index.jsp</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="deleteCompany">
 			<result type="json">
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="updateCompany" class="companyAction" method="updateCompany">
 			<result type="json">
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="findAllCompany" class="companyAction" method="findAllCompany">
 			<result type="json">
 				<param name="root">pageBean</param>
+				<param name="excludeProperties">objCondition, userId</param>
 			</result>
 		</action>
 		<action name="findCompanyByExample" class="companyAction"
 			method="findByExample">
 			<result type="json">
 				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
 			</result>
 		</action>
 		<!-- <action name="orderExport" class="orderAction"> <result name="success" 
@@ -227,35 +241,30 @@
 		<!-- 简历管理 -->
 		<action name="saveResume" class="resumeAction" method="saveResume">
 			<result type="json">
-				<param name="includeProperties">success, resumeId, tip</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
-			<result name="error">/index.jsp</result>
 		</action>
 		<action name="updateResume" class="resumeAction" method="updateResume">
 			<result type="json">
-				<param name="includeProperties">success, discountId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
-			<result name="error">/index.jsp</result>
 		</action>
 		<action name="findAllResume" class="resumeAction" method="findAllResume">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
 			</result>
-			<result name="error">/index.jsp</result>
 		</action>
 		<action name="deleteResume" class="resumeAction" method="deleteResume">
 			<result type="json">
-				<param name="includeProperties">success, discountId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
-			<result name="error">/index.jsp</result>
 		</action>
 		<action name="findResumeByExample" class="resumeAction" method="findByExample">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
 			</result>
-			<result name="error">/index.jsp</result>
 		</action>
 
 		<!-- 职位收藏管理 -->

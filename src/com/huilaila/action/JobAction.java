@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.huilaila.core.BaseAction;
 import com.huilaila.core.Page;
+import com.huilaila.po.Company;
 import com.huilaila.po.Job;
 import com.huilaila.service.IJobService;
 import com.huilaila.utils.MyUtils;
@@ -19,6 +20,8 @@ public class JobAction extends BaseAction {
 
 	private Job job;
 
+	private Company company;
+
 	private boolean success;
 
 	private Page pageBean;
@@ -26,12 +29,14 @@ public class JobAction extends BaseAction {
 	private String tip;
 
 	public String saveJob() {
+		System.out.println("===JobAction.saveJob===");
 		Long jobId = (Long) jobService.saveJob(job);
-		return jobId != null ? SUCCESS : ERROR;
+		success = jobId != null;
+		return SUCCESS;
 	}
 
 	public String findAllJob() {
-		System.out.println("===");
+		System.out.println("===JobAction.findAllJob===");
 		String strCondition = getRequest().getParameter("conditions");
 		List<String> conditions = new ArrayList<String>();
 		MyUtils.addToCollection(conditions, MyUtils.split(strCondition, " ,"));
@@ -46,35 +51,59 @@ public class JobAction extends BaseAction {
 		}
 		pageBean = new Page();
 		pageBean.setConditions(utf8Condition);
-		int start = Integer.valueOf(getRequest().getParameter("start"));
-		int limit = Integer.valueOf(getRequest().getParameter("limit"));
-		pageBean.setStart(++start);
-		pageBean.setLimit(limit = limit == 0 ? 20 : limit);
+		String start = getRequest().getParameter("start");
+		String limit = getRequest().getParameter("limit");
+		int startInt = start != null ? Integer.valueOf(start) : 0;
+		int limitInt = limit != null ? Integer.valueOf(limit) : 10;
+		pageBean.setLimit(limitInt);
+		pageBean.setStart(startInt);
 		pageBean = jobService.findByPage(pageBean);
+		pageBean.setSuccess(pageBean.getRoot() != null);
 		return SUCCESS;
 	}
 
 	public String findByExample() {
 		pageBean = new Page();
-		pageBean.setRoot(jobService.findByExample(job));
+		List jobs = jobService.findByExample(job);
+		success = jobs != null;
+		if (success) {
+			pageBean.setRoot(jobs);
+			pageBean.setTotalProperty(jobs.size());
+		}
 		return SUCCESS;
 	}
 
 	public String deleteJob() {
-		return jobService.deleteJob(job) ? SUCCESS : ERROR;
+		success = jobService.deleteJob(job);
+		return SUCCESS;
 	}
 
 	public String updateJob() throws Exception {
-		Job currUser = (Job) getSession().getAttribute("currUser");
-		if (currUser == null) {
-			return ERROR;
-		}
-		if (job != null) {
-			success = jobService.updateJob(job);
+		success = jobService.updateJob(job);
+		return SUCCESS;
+	}
+
+	public String findByCompany() {
+		pageBean = new Page();
+		List jobs = jobService.findByCompany(company);
+		if (jobs != null) {
+			success = true;
+			pageBean.setRoot(jobs);
+			pageBean.setTotalProperty(jobs.size());
+			pageBean.setSuccess(true);
 		} else {
 			success = false;
+			pageBean.setSuccess(false);
 		}
-		return success ? SUCCESS : ERROR;
+		return SUCCESS;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public Page getPageBean() {

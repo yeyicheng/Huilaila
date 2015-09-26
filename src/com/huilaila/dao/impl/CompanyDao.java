@@ -38,7 +38,7 @@ public class CompanyDao extends SqlMapClientDaoSupport implements ICompanyDao {
 	}
 
 	public List findByExample(Company company) {
-		return getSqlMapClientTemplate().queryForList("Company.findByLocation",
+		return getSqlMapClientTemplate().queryForList("Company.findByExample",
 				company);
 	}
 

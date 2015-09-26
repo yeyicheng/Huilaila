@@ -67,8 +67,8 @@
 			<iterate property="conditions" open="(" close=")"
 				conjunction="OR">
 				<![CDATA[
-					upper(resumeName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(userName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
+					upper(resumeName) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(userName) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#), '%')
 		    	]]>
 			</iterate>
 		</isNotEmpty>
@@ -88,7 +88,7 @@
 
 	<select id="findByCount" parameterClass="page" resultClass="int">
 		<![CDATA[
-			SELECT COUNT(*) FROM t_resumes left join t_user t2 on t1.userId = t2.userId
+			SELECT COUNT(*) FROM t_resumes T1 left join t_user t2 on t1.userId = t2.userId
 		]]>
 		<dynamic prepend="WHERE">
 			<include refid="findResumeByPageCondition" />

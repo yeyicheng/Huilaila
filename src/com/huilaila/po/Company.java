@@ -1,4 +1,5 @@
 package com.huilaila.po;
+
 public class Company {
 	Long companyId;
 	String companyName;
@@ -8,6 +9,15 @@ public class Company {
 	String licence;
 	String contact;
 	String cell;
+	String description;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public Long getCompanyId() {
 		return companyId;
