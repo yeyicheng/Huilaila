@@ -16,9 +16,9 @@ public class TagAction extends BaseAction {
 	private ITagService tagService;
 
 	private Tag tag;
-	
+
 	private User user;
-	
+
 	private Page pageBean;
 
 	private boolean success;
@@ -100,6 +100,14 @@ public class TagAction extends BaseAction {
 
 	public void setPageBean(Page pageBean) {
 		this.pageBean = pageBean;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
