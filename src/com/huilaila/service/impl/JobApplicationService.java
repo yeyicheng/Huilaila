@@ -3,7 +3,9 @@ package com.huilaila.service.impl;
 import java.util.List;
 
 import com.huilaila.dao.IJobApplicationDao;
+import com.huilaila.po.Job;
 import com.huilaila.po.JobApplication;
+import com.huilaila.po.User;
 import com.huilaila.service.IJobApplicationService;
 
 public class JobApplicationService implements IJobApplicationService {
@@ -31,8 +33,16 @@ public class JobApplicationService implements IJobApplicationService {
 		return jobApplicationDao.deleteById(jobApplication) != null;
 	}
 
-	public List findByExample(JobApplication jobApplication) {
-		return jobApplicationDao.findByExample(jobApplication);
+//	public List findByExample(JobApplication jobApplication) {
+//		return jobApplicationDao.findByExample(jobApplication);
+//	}
+
+	public List findByJob(Job job) {
+		return jobApplicationDao.findByJob(job);
+	}
+
+	public List findByUser(User user) {
+		return jobApplicationDao.findByUser(user);
 	}
 
 }

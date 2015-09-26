@@ -1,7 +1,7 @@
 package com.huilaila.po;
 
 public class JobApplication {
-	Long applicationId;
+	Long jobApplicationId;
 	Long userId;
 	Long jobId;
 	Long resumeId;
@@ -15,12 +15,12 @@ public class JobApplication {
 		this.state = state;
 	}
 
-	public Long getApplicationId() {
-		return applicationId;
+	public Long getJobApplicationId() {
+		return jobApplicationId;
 	}
 
-	public void setApplicationId(Long applicationId) {
-		this.applicationId = applicationId;
+	public void setJobApplicationId(Long jobApplicationId) {
+		this.jobApplicationId = jobApplicationId;
 	}
 
 	public Long getUserId() {

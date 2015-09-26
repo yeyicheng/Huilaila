@@ -7,6 +7,7 @@
 <sqlMap namespace="User">
 
 	<typeAlias alias="user" type="com.huilaila.po.User" />
+	<typeAlias alias="job" type="com.huilaila.po.Job" />
 	<typeAlias alias="page" type="com.huilaila.core.Page" />
 	<typeAlias alias="tag" type="com.huilaila.po.Tag" />
 
@@ -247,7 +248,8 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull property="userName" prepend="AND">
-				userName = #userName: VARCHAR#
+				userName =
+				#userName: VARCHAR#
 			</isNotNull>
 		</dynamic>
 	</select>
@@ -273,6 +275,21 @@
 			AND (latitude + 180 / PI() * 1 / 6372.797))) 
 			AND (longtitude BETWEEN (longtitude - range / COS(myLat * PI() / 180.0)) 
 			AND (longtitude + range / COS(myLat * PI() / 180.0)))) order by rand() limit 10
+		]]>
+	</select>
+
+	<select id="findByJobApplication" parameterClass="job"
+		resultClass="user">
+		<![CDATA[
+			select * from t_user t1 where userId in (select userId from t_jobApplications t2 	
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="jobId" prepend="AND">
+				jobId = #jobId: INT#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+			)
 		]]>
 	</select>
 </sqlMap>

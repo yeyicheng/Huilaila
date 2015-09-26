@@ -1,7 +1,10 @@
 package com.huilaila.service.impl;
 
+import java.util.List;
+
 import com.huilaila.dao.IJobFavoriteDao;
 import com.huilaila.po.JobFavorite;
+import com.huilaila.po.User;
 import com.huilaila.service.IJobFavoriteService;
 
 public class JobFavoriteService implements IJobFavoriteService {
@@ -22,6 +25,10 @@ public class JobFavoriteService implements IJobFavoriteService {
 
 	public boolean deleteJobFavorite(JobFavorite jobFavorite) {
 		return jobFavoriteDao.deleteById(jobFavorite) != null;
+	}
+
+	public List findByUser(User user) {
+		return jobFavoriteDao.findByUser(user);
 	}
 
 }

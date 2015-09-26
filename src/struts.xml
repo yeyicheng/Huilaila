@@ -120,8 +120,14 @@
 		<action name="findUsersByTag" class="userAction" method="findByTag">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">user, tag, oldPwd, objCondition, userId,
-					conditions</param>
+				<param name="excludeProperties">objCondition, userId, conditions</param>
+			</result>
+		</action>
+		<action name="findUsersByJobApplication" class="userAction"
+			method="findByJobApplication">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">objCondition, userId, conditions</param>
 			</result>
 		</action>
 
@@ -271,13 +277,20 @@
 		<action name="saveJobFavorite" class="jobFavoriteAction"
 			method="saveJobFavorite">
 			<result type="json">
-				<param name="includeProperties">success, jobFavoriteId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="deleteJobFavorite" class="jobFavoriteAction"
 			method="deleteJobFavorite">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findJobFavoriteByUser" class="jobFavoriteAction"
+			method="findByUser">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, userId, objCondition</param>
 			</result>
 		</action>
 
@@ -285,26 +298,33 @@
 		<action name="saveJobApplication" class="jobApplicationAction"
 			method="saveJobApplication">
 			<result type="json">
-				<param name="includeProperties">success, jobApplicationId</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="deleteJobApplication" class="jobApplicationAction"
 			method="deleteJobApplication">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
 		<action name="updateJobApplication" class="jobApplicationAction"
 			method="updateJobApplication">
 			<result type="json">
-				<param name="includeProperties">success</param>
+				<param name="includeProperties">success, tip</param>
 			</result>
 		</action>
-		<action name="findJobApplicationByExample" class="jobApplicationAction"
-			method="findByExample">
+		<action name="findJobApplicationByJob" class="jobApplicationAction"
+			method="findByJob">
 			<result type="json">
 				<param name="root">pageBean</param>
-				<param name="excludeProperties">conditions,limit,start,success,objCondition</param>
+				<param name="excludeProperties">conditions, userId, objCondition</param>
+			</result>
+		</action>
+		<action name="findJobApplicationByUser" class="jobApplicationAction"
+			method="findByUser">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, userId, objCondition</param>
 			</result>
 		</action>
 	</package>

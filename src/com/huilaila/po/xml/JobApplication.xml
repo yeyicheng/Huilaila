@@ -6,6 +6,8 @@
 
 <sqlMap namespace="JobApplication">
 	<typeAlias alias="jobApplication" type="com.huilaila.po.JobApplication" />
+	<typeAlias alias="user" type="com.huilaila.po.User" />
+	<typeAlias alias="job" type="com.huilaila.po.Job" />
 	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="jobApplication" id="pm_jobApplication_without_id">
@@ -57,18 +59,24 @@
 		</dynamic>
 	</update>
 
-	<select id="findByExample" parameterClass="jobApplication"
-		resultClass="jobApplication">
+	<select id="findByUser" parameterClass="user" resultClass="jobApplication">
 		<![CDATA[
-			select * from t_jobApplications t1 left join t_companys t2 on t1.companyId = t2.companyId 
-			left join t_user t3 on t1.userId = t3.userId
+			select * from t_jobApplications t1
 		]]>
 		<dynamic prepend="WHERE">
-			<isNotNull property="companyId" prepend="AND">
-				companyId = #companyId: INT#
-			</isNotNull>
 			<isNotNull property="userId" prepend="AND">
 				userId = #userId: INT#
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="findByJob" parameterClass="job" resultClass="jobApplication">
+		<![CDATA[
+			select * from t_jobApplications t1
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull property="jobId" prepend="AND">
+				jobId = #jobId: INT#
 			</isNotNull>
 		</dynamic>
 	</select>

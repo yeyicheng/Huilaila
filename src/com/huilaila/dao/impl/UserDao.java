@@ -6,6 +6,7 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import com.huilaila.core.Page;
 import com.huilaila.dao.IUserDao;
+import com.huilaila.po.Job;
 import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 
@@ -54,6 +55,11 @@ public class UserDao extends SqlMapClientDaoSupport implements IUserDao {
 	public List findBySchool(User user) {
 		return getSqlMapClientTemplate()
 				.queryForList("User.findBySchool", user);
+	}
+
+	public List findByJobApplication(Job job) {
+		return getSqlMapClientTemplate().queryForList(
+				"User.findByJobApplication", job);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.huilaila.service.impl;
 import java.util.List;
 
 import com.huilaila.dao.IUserDao;
+import com.huilaila.po.Job;
 import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 import com.huilaila.service.IUserService;
@@ -60,6 +61,10 @@ public class UserService implements IUserService {
 
 	public List findBySchool(User user) {
 		return userDao.findBySchool(user);
+	}
+
+	public List findByJobApplication(Job job) {
+		return userDao.findByJobApplication(job);
 	}
 
 }

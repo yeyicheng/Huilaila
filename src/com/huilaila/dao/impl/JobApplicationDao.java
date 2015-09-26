@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import com.huilaila.dao.IJobApplicationDao;
+import com.huilaila.po.Job;
 import com.huilaila.po.JobApplication;
+import com.huilaila.po.User;
 
 public class JobApplicationDao extends SqlMapClientDaoSupport implements
 		IJobApplicationDao {
@@ -27,7 +29,15 @@ public class JobApplicationDao extends SqlMapClientDaoSupport implements
 				jobApplication);
 	}
 
-	public List findByExample(JobApplication jobApplication) {
-		return getSqlMapClientTemplate().queryForList("JobApplication.findByExample", jobApplication);
+//	public List findByExample(JobApplication jobApplication) {
+//		return getSqlMapClientTemplate().queryForList("JobApplication.findByExample", jobApplication);
+//	}
+
+	public List findByJob(Job job) {
+		return getSqlMapClientTemplate().queryForList("JobApplication.findByJob", job);
+	}
+
+	public List findByUser(User user) {
+		return getSqlMapClientTemplate().queryForList("JobApplication.findByUser", user);
 	}
 }

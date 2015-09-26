@@ -1,8 +1,12 @@
 package com.huilaila.action;
 
+import java.util.List;
+
 import com.huilaila.core.BaseAction;
 import com.huilaila.core.Page;
+import com.huilaila.po.Job;
 import com.huilaila.po.JobApplication;
+import com.huilaila.po.User;
 import com.huilaila.service.IJobApplicationService;
 
 @SuppressWarnings("serial")
@@ -20,36 +24,61 @@ public class JobApplicationAction extends BaseAction {
 
 	private String tip;
 
+	private Job job;
+
+	private User user;
+
 	public String saveJobApplication() {
+		System.out.println("===JobApplicationAction.saveJobApplication===");
 		Long jobApplicationId = (Long) jobApplicationService
 				.saveJobApplication(jobApplication);
-		return jobApplicationId != null ? SUCCESS : ERROR;
+		success = jobApplicationId != null;
+		return SUCCESS;
 	}
 
-	public String findByExample() {
+	public String findByJob() {
+		System.out.println("===JobApplicationAction.findByExample===");
 		pageBean = new Page();
-		pageBean.setRoot(jobApplicationService.findByExample(jobApplication));
+		List applications = jobApplicationService.findByJob(job);
+		if (applications != null) {
+			pageBean.setRoot(applications);
+			pageBean.setTotalProperty(applications.size());
+			pageBean.setSuccess(true);
+		} else {
+			pageBean.setSuccess(false);
+		}
+		return SUCCESS;
+	}
+	
+	public String findByUser() {
+		System.out.println("===JobApplicationAction.findByExample===");
+		pageBean = new Page();
+		List applications = jobApplicationService.findByUser(user);
+		if (applications != null) {
+			pageBean.setRoot(applications);
+			pageBean.setTotalProperty(applications.size());
+			pageBean.setSuccess(true);
+		} else {
+			pageBean.setSuccess(false);
+		}
 		return SUCCESS;
 	}
 
 	public String deleteJobApplication() {
-		return jobApplicationService.deleteJobApplication(jobApplication) ? SUCCESS
-				: ERROR;
+		System.out.println("===JobApplicationAction.deleteJobApplication===");
+		success = jobApplicationService.deleteJobApplication(jobApplication);
+		return SUCCESS;
 	}
 
 	public String updateJobApplication() throws Exception {
-		JobApplication currUser = (JobApplication) getSession().getAttribute(
-				"currUser");
-		if (currUser == null) {
-			return ERROR;
-		}
+		System.out.println("===JobApplicationAction.updateJobApplication===");
 		if (jobApplication != null) {
 			success = jobApplicationService
 					.updateJobApplication(jobApplication);
 		} else {
 			success = false;
 		}
-		return success ? SUCCESS : ERROR;
+		return SUCCESS;
 	}
 
 	public Page getPageBean() {
@@ -87,6 +116,22 @@ public class JobApplicationAction extends BaseAction {
 
 	public void setTip(String tip) {
 		this.tip = tip;
+	}
+
+	public Job getJob() {
+		return job;
+	}
+
+	public void setJob(Job job) {
+		this.job = job;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

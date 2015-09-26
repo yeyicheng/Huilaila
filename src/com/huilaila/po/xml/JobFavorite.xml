@@ -7,11 +7,13 @@
 <sqlMap namespace="JobFavorite">
 
 	<typeAlias alias="jobFavorite" type="com.huilaila.po.JobFavorite" />
+	<typeAlias alias="job" type="com.huilaila.po.Job" />
+	<typeAlias alias="user" type="com.huilaila.po.User" />
 	<typeAlias alias="page" type="com.huilaila.core.Page" />
 
 	<parameterMap class="jobFavorite" id="pm_jobFavorite_without_id">
 		<parameter property="userId" javaType="long" jdbcType="INT" />
-		<parameter property="jobId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="jobId" javaType="long" jdbcType="INT" />
 	</parameterMap>
 
 	<sql id="byJobFavoriteIdCondition">
@@ -40,78 +42,17 @@
 		</dynamic>
 	</delete>
 
-	<!-- <update id="update" parameterClass="jobFavorite">
+	<select id="findByUser" parameterClass="user" resultClass="job">
 		<![CDATA[
-			UPDATE t_jobFavorites
+			select * from t_jobs where jobId in (select jobId from t_jobFavorites
 		]]>
-		<dynamic prepend="SET">
-			<isNotEmpty property="jobFavoriteName" prepend=",">
-				<![CDATA[
-					jobFavoriteName = #jobFavoriteName:VARCHAR#
-				]]>
-			</isNotEmpty>
-			<isNotEmpty property="jobFavoriteUrl" prepend=",">
-				<![CDATA[
-					jobFavoriteUrl = #jobFavoriteUrl:VARCHAR#
-				]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId:INT#
 			</isNotEmpty>
 		</dynamic>
-		<dynamic prepend="WHERE">
-			<include refid="byJobFavoriteIdCondition" />
-		</dynamic>
-	</update>
- -->
-	<!-- <sql id="findJobFavoriteByPageCondition">
-		<isNotEmpty property="conditions">
-			<iterate property="conditions" open="(" close=")"
-				conjunction="OR">
-				<![CDATA[
-					upper(jobFavoriteName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-				    OR upper(userName) LIKE '%' + upper(#conditions[]:VARCHAR#) + '%'
-		    	]]>
-			</iterate>
-		</isNotEmpty>
-	</sql>
-
-	<select id="findByPage" parameterClass="page" resultClass="jobFavorite">
 		<![CDATA[
-			SELECT TOP $limit$ * FROM t_jobFavorites t1 left join t_user t2 on t1.userId = t2.userId 
-					WHERE (jobFavoriteId >= (SELECT MAX(jobFavoriteId) FROM (SELECT TOP $start$ jobFavoriteId FROM t_jobFavorites 
-		]]>
-		<dynamic prepend="WHERE">
-			<include refid="findJobFavoriteByPageCondition" />
-		</dynamic>
-		<![CDATA[
-			ORDER BY jobFavoriteId ) AS T)) 
-		]]>
-		<dynamic prepend="AND">
-			<include refid="findJobFavoriteByPageCondition" />
-		</dynamic>
-		<![CDATA[
-			ORDER BY jobFavoriteId
+			)
 		]]>
 	</select>
- -->
-	<!-- <select id="findByCount" parameterClass="page" resultClass="int">
-		<![CDATA[
-			SELECT COUNT(*) FROM t_jobFavorites left join t_user t2 on t1.userId = t2.userId
-		]]>
-		<dynamic prepend="WHERE">
-			<include refid="findJobFavoriteByPageCondition" />
-		</dynamic>
-	</select>
- -->
-
-	<!-- <select id="findByExample" parameterClass="jobFavorite"
-		resultClass="jobFavorite">
-		<![CDATA[
-			SELECT * FROM t_jobFavorites 
-		]]>
-		<dynamic prepend="WHERE">
-			<isNotNull property="jobFavoriteId" prepend="AND">
-				jobFavoriteId =
-				#jobFavoriteId:INT#
-			</isNotNull>
-		</dynamic>
-	</select> -->
 </sqlMap>

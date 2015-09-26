@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.huilaila.core.BaseAction;
 import com.huilaila.core.Page;
+import com.huilaila.po.Job;
 import com.huilaila.po.Tag;
 import com.huilaila.po.User;
 import com.huilaila.service.IUserService;
@@ -31,7 +32,9 @@ public class UserAction extends BaseAction {
 	private String oldPwd;
 
 	private Tag tag;
-	
+
+	private Job job;
+
 	public String logout() {
 		getSession().removeAttribute("currUser");
 		success = true;
@@ -63,7 +66,7 @@ public class UserAction extends BaseAction {
 	public String register() throws NoSuchAlgorithmException,
 			UnsupportedEncodingException {
 		System.out.println("===UserAction.register===");
-		List<User> _userInDb = (List<User>) userService.findByExample(user);
+		List<User> _userInDb = userService.findByExample(user);
 		if (_userInDb != null && !_userInDb.isEmpty()) {
 			setTip("用户名已存在！");
 			setSuccess(false);
@@ -78,7 +81,7 @@ public class UserAction extends BaseAction {
 	public String saveUser() throws NoSuchAlgorithmException,
 			UnsupportedEncodingException {
 		System.out.println("===UserAction.register===");
-		List<User> _userInDb = (List<User>) userService.findByExample(user);
+		List<User> _userInDb = userService.findByExample(user);
 		if (_userInDb != null && !_userInDb.isEmpty()) {
 			setTip("用户名已存在！");
 			setSuccess(false);
@@ -127,11 +130,25 @@ public class UserAction extends BaseAction {
 		}
 		return SUCCESS;
 	}
-	
+
 	public String findByTag() {
 		System.out.println("===UserAction.findByTag===");
 		pageBean = new Page();
 		List users = userService.findByTag(tag);
+		if (null == users) {
+			success = false;
+		} else {
+			pageBean.setRoot(users);
+			pageBean.setTotalProperty(users.size());
+			pageBean.setSuccess(true);
+		}
+		return SUCCESS;
+	}
+
+	public String findByJobApplication() {
+		System.out.println("===UserAction.findByJobApplication===");
+		pageBean = new Page();
+		List users = userService.findByJobApplication(job);
 		if (null == users) {
 			success = false;
 		} else {
@@ -232,6 +249,14 @@ public class UserAction extends BaseAction {
 
 	public void setTag(Tag tag) {
 		this.tag = tag;
+	}
+
+	public Job getJob() {
+		return job;
+	}
+
+	public void setJob(Job job) {
+		this.job = job;
 	}
 
 }
