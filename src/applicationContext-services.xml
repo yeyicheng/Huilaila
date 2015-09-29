@@ -1,40 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
-	
+
 	<bean id="userService" class="com.huilaila.service.impl.UserService">
 		<property name="userDao" ref="userDao" />
 	</bean>
-	
+
 	<bean id="tagService" class="com.huilaila.service.impl.TagService">
 		<property name="tagDao" ref="tagDao" />
 	</bean>
-	
+
 	<bean id="userTagService" class="com.huilaila.service.impl.UserTagService">
 		<property name="userTagDao" ref="userTagDao" />
 	</bean>
-	
+
 	<bean id="jobService" class="com.huilaila.service.impl.JobService">
 		<property name="jobDao" ref="jobDao" />
 	</bean>
-	
+
 	<bean id="companyService" class="com.huilaila.service.impl.CompanyService">
 		<property name="companyDao" ref="companyDao" />
 	</bean>
-	
+
 	<bean id="resumeService" class="com.huilaila.service.impl.ResumeService">
 		<property name="resumeDao" ref="resumeDao" />
 	</bean>
-	
+
 	<bean id="jobApplicationService" class="com.huilaila.service.impl.JobApplicationService">
 		<property name="jobApplicationDao" ref="jobApplicationDao" />
 	</bean>
-	
+
 	<bean id="jobFavoriteService" class="com.huilaila.service.impl.JobFavoriteService">
 		<property name="jobFavoriteDao" ref="jobFavoriteDao" />
+	</bean>
+
+	<bean id="noteService" class="com.huilaila.service.impl.NoteService">
+		<property name="noteDao" ref="noteDao" />
+	</bean>
+
+	<bean id="noteFavoriteService" class="com.huilaila.service.impl.NoteFavoriteService">
+		<property name="noteFavoriteDao" ref="noteFavoriteDao" />
+	</bean>
+
+	<bean id="productService" class="com.huilaila.service.impl.ProductService">
+		<property name="productDao" ref="productDao" />
+	</bean>
+
+	<bean id="shopService" class="com.huilaila.service.impl.ShopService">
+		<property name="shopDao" ref="shopDao" />
+	</bean>
+	
+	<bean id="commentService" class="com.huilaila.service.impl.CommentService">
+		<property name="commentDao" ref="commentDao" />
+	</bean>
+	
+	<bean id="addressService" class="com.huilaila.service.impl.AddressService">
+		<property name="addressDao" ref="addressDao" />
+	</bean>
+	
+	<bean id="orderService" class="com.huilaila.service.impl.OrderService">
+		<property name="orderDao" ref="orderDao" />
 	</bean>
 </beans>

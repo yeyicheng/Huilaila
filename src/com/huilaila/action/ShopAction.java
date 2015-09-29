@@ -6,21 +6,18 @@ import java.util.List;
 
 import com.huilaila.core.BaseAction;
 import com.huilaila.core.Page;
-import com.huilaila.po.Company;
-import com.huilaila.po.Job;
-import com.huilaila.service.IJobService;
+import com.huilaila.po.Shop;
+import com.huilaila.service.IShopService;
 import com.huilaila.utils.MyUtils;
 
 @SuppressWarnings("serial")
-public class JobAction extends BaseAction {
+public class ShopAction extends BaseAction {
 
 	public static final String SUCCESS_MANAGER = "success_manager";
 
-	private IJobService jobService;
+	private IShopService shopService;
 
-	private Job job;
-
-	private Company company;
+	private Shop shop;
 
 	private boolean success;
 
@@ -28,15 +25,15 @@ public class JobAction extends BaseAction {
 
 	private String tip;
 
-	public String saveJob() {
-		System.out.println("===JobAction.saveJob===");
-		Long jobId = (Long) jobService.saveJob(job);
-		success = jobId != null;
+	public String saveShop() {
+		System.out.println("===ShopAction.saveShop===");
+		Long shopId = (Long) shopService.saveShop(shop);
+		success = shopId != null;
 		return SUCCESS;
 	}
 
-	public String findAllJob() {
-		System.out.println("===JobAction.findAllJob===");
+	public String findAllShop() {
+		System.out.println("===ShopAction.findAllShop===");
 		String strCondition = getRequest().getParameter("conditions");
 		List<String> conditions = new ArrayList<String>();
 		MyUtils.addToCollection(conditions, MyUtils.split(strCondition, " ,"));
@@ -57,54 +54,31 @@ public class JobAction extends BaseAction {
 		int limitInt = limit != null ? Integer.valueOf(limit) : 10;
 		pageBean.setLimit(limitInt);
 		pageBean.setStart(startInt);
-		pageBean = jobService.findByPage(pageBean);
+		pageBean = shopService.findByPage(pageBean);
 		pageBean.setSuccess(pageBean.getRoot() != null);
 		return SUCCESS;
 	}
 
 	public String findByExample() {
 		pageBean = new Page();
-		List jobs = jobService.findByExample(job);
-		success = jobs != null;
+		List shops = shopService.findByExample(shop);
+		success = shops != null;
 		if (success) {
-			pageBean.setRoot(jobs);
-			pageBean.setTotalProperty(jobs.size());
+			pageBean.setRoot(shops);
+			pageBean.setTotalProperty(shops.size());
 			pageBean.setSuccess(true);
 		}
 		return SUCCESS;
 	}
 
-	public String deleteJob() {
-		success = jobService.deleteJob(job);
+	public String deleteShop() {
+		success = shopService.deleteShop(shop);
 		return SUCCESS;
 	}
 
-	public String updateJob() throws Exception {
-		success = jobService.updateJob(job);
+	public String updateShop() {
+		success = shopService.updateShop(shop);
 		return SUCCESS;
-	}
-
-	public String findByCompany() {
-		pageBean = new Page();
-		List jobs = jobService.findByCompany(company);
-		if (jobs != null) {
-			success = true;
-			pageBean.setRoot(jobs);
-			pageBean.setTotalProperty(jobs.size());
-			pageBean.setSuccess(true);
-		} else {
-			success = false;
-			pageBean.setSuccess(false);
-		}
-		return SUCCESS;
-	}
-
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
 	}
 
 	public Page getPageBean() {
@@ -123,16 +97,16 @@ public class JobAction extends BaseAction {
 		this.success = success;
 	}
 
-	public Job getJob() {
-		return job;
+	public Shop getShop() {
+		return shop;
 	}
 
-	public void setJob(Job job) {
-		this.job = job;
+	public void setShop(Shop shop) {
+		this.shop = shop;
 	}
 
-	public void setJobService(IJobService jobService) {
-		this.jobService = jobService;
+	public void setShopService(IShopService shopService) {
+		this.shopService = shopService;
 	}
 
 	public String getTip() {

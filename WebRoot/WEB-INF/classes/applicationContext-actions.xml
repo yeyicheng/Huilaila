@@ -1,40 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-	<bean name="userAction" class="com.huilaila.action.UserAction" scope="prototype">
+	<bean name="userAction" class="com.huilaila.action.UserAction"
+		scope="prototype">
 		<property name="userService" ref="userService" />
 	</bean>
-	
-	<bean name="tagAction" class="com.huilaila.action.TagAction" scope="prototype">
+
+	<bean name="tagAction" class="com.huilaila.action.TagAction"
+		scope="prototype">
 		<property name="tagService" ref="tagService" />
 	</bean>
-	
-	<bean name="userTagAction" class="com.huilaila.action.UserTagAction" scope="prototype">
+
+	<bean name="userTagAction" class="com.huilaila.action.UserTagAction"
+		scope="prototype">
 		<property name="userTagService" ref="userTagService" />
 	</bean>
-	
-	<bean name="jobAction" class="com.huilaila.action.JobAction" scope="prototype">
+
+	<bean name="jobAction" class="com.huilaila.action.JobAction"
+		scope="prototype">
 		<property name="jobService" ref="jobService" />
 	</bean>
-	
-	<bean name="companyAction" class="com.huilaila.action.CompanyAction" scope="prototype">
+
+	<bean name="companyAction" class="com.huilaila.action.CompanyAction"
+		scope="prototype">
 		<property name="companyService" ref="companyService" />
 	</bean>
-	
-	<bean name="resumeAction" class="com.huilaila.action.ResumeAction" scope="prototype">
+
+	<bean name="resumeAction" class="com.huilaila.action.ResumeAction"
+		scope="prototype">
 		<property name="resumeService" ref="resumeService" />
 	</bean>
 
-	<bean name="jobApplicationAction" class="com.huilaila.action.JobApplicationAction" scope="prototype">
+	<bean name="jobApplicationAction" class="com.huilaila.action.JobApplicationAction"
+		scope="prototype">
 		<property name="jobApplicationService" ref="jobApplicationService" />
 	</bean>
-	
-	<bean name="jobFavoriteAction" class="com.huilaila.action.JobFavoriteAction" scope="prototype">
+
+	<bean name="jobFavoriteAction" class="com.huilaila.action.JobFavoriteAction"
+		scope="prototype">
 		<property name="jobFavoriteService" ref="jobFavoriteService" />
+	</bean>
+
+	<bean name="noteAction" class="com.huilaila.action.NoteAction"
+		scope="prototype">
+		<property name="noteService" ref="noteService" />
+	</bean>
+
+	<bean name="noteFavoriteAction" class="com.huilaila.action.NoteFavoriteAction"
+		scope="prototype">
+		<property name="noteFavoriteService" ref="noteFavoriteService" />
+	</bean>
+
+	<bean name="productAction" class="com.huilaila.action.ProductAction"
+		scope="prototype">
+		<property name="productService" ref="productService" />
+	</bean>
+
+	<bean name="shopAction" class="com.huilaila.action.ShopAction"
+		scope="prototype">
+		<property name="shopService" ref="shopService" />
+	</bean>
+
+	<bean name="commentAction" class="com.huilaila.action.CommentAction"
+		scope="prototype">
+		<property name="commentService" ref="commentService" />
+	</bean>
+
+	<bean name="addressAction" class="com.huilaila.action.AddressAction"
+		scope="prototype">
+		<property name="addressService" ref="addressService" />
+	</bean>
+
+	<bean name="orderAction" class="com.huilaila.action.OrderAction"
+		scope="prototype">
+		<property name="orderService" ref="orderService" />
 	</bean>
 </beans>

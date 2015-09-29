@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Address">
+
+	<typeAlias alias="address" type="com.huilaila.po.Address" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="address" id="pm_address_without_id">
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="country" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="province" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="city" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="address" javaType="string" jdbcType="FLOAT" />
+		<parameter property="cell" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="code" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>
+	<sql id="byAddressIdCondition">
+		<![CDATA[
+		   addressId = #addressId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_address_without_id">
+		<![CDATA[
+			INSERT INTO t_address (userId, country, province, city, address, cell, code) 
+				 VALUES (?, ?, ?, ?, ?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="address">
+		<![CDATA[
+			delete from t_address
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byAddressIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="address">
+		<![CDATA[
+			UPDATE t_address
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="country" prepend=",">
+				<![CDATA[
+					country = #country: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="province" prepend=",">
+				<![CDATA[
+					province = #province: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="city" prepend=",">
+				<![CDATA[
+					city = #city: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="address" prepend=",">
+				<![CDATA[
+					address = #address: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="cell" prepend=",">
+				<![CDATA[
+					cell = #cell: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="code" prepend=",">
+				<![CDATA[
+					code = #code: VARCHAR#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byAddressIdCondition" />
+		</dynamic>
+	</update>
+
+	<!-- <sql id="findAddressByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(addressName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="address">
+		<![CDATA[
+			SELECT  * FROM t_addresss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findAddressByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY addressId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_addresss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findAddressByPageCondition" />
+		</dynamic>
+	</select> -->
+
+	<select id="findByExample" parameterClass="address" resultClass="address">
+		<![CDATA[
+			SELECT * FROM t_address 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

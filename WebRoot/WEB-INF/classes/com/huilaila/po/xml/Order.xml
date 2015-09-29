@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Order">
+
+	<typeAlias alias="order" type="com.huilaila.po.Order" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="order" id="pm_order_without_id">
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="addressId" javaType="long" jdbcType="INT" />
+		<parameter property="orderTime" javaType="java.util.Date" jdbcType="DATETIME" />
+	</parameterMap>
+	
+	<sql id="byOrderIdCondition">
+		<![CDATA[
+		   orderId = #orderId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_order_without_id">
+		<![CDATA[
+			INSERT INTO t_orders (userId, addressId, orderTime) 
+				 VALUES (?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="order">
+		<![CDATA[
+			delete from t_orders
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byOrderIdCondition" />
+		</dynamic>
+	</delete>
+
+	<!-- <update id="update" parameterClass="order">
+		<![CDATA[
+			UPDATE t_orders
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="country" prepend=",">
+				<![CDATA[
+					country = #country: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="province" prepend=",">
+				<![CDATA[
+					province = #province: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="city" prepend=",">
+				<![CDATA[
+					city = #city: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="order" prepend=",">
+				<![CDATA[
+					order = #order: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="cell" prepend=",">
+				<![CDATA[
+					cell = #cell: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="code" prepend=",">
+				<![CDATA[
+					code = #code: VARCHAR#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byOrderIdCondition" />
+		</dynamic>
+	</update> -->
+
+	<!-- <sql id="findOrderByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(orderName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="order">
+		<![CDATA[
+			SELECT  * FROM t_orderss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findOrderByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY orderId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_orderss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findOrderByPageCondition" />
+		</dynamic>
+	</select> -->
+
+	<select id="findByExample" parameterClass="order" resultClass="order">
+		<![CDATA[
+			SELECT * FROM t_orders 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Shop">
+
+	<typeAlias alias="shop" type="com.huilaila.po.Shop" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="shop" id="pm_shop_without_id">
+		<parameter property="shopName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="description" javaType="string"
+			jdbcType="VARCHAR" />
+	</parameterMap>
+
+	<sql id="byShopIdCondition">
+		<![CDATA[
+		   shopId = #shopId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_shop_without_id">
+		<![CDATA[
+			INSERT INTO t_shops (shopName, userId, description) VALUES (?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="shop">
+		<![CDATA[
+			delete from t_shops
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byShopIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="shop">
+		<![CDATA[
+			UPDATE t_shops
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="shopName" prepend=",">
+				<![CDATA[
+					shopName = #shopName: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend=",">
+				<![CDATA[
+					description = #description: FLOAT#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byShopIdCondition" />
+		</dynamic>
+	</update>
+
+	<sql id="findShopByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(shopName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="shop">
+		<![CDATA[
+			SELECT  * FROM t_shops 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findShopByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY shopId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_shops 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findShopByPageCondition" />
+		</dynamic>
+	</select>
+
+	<select id="findByExample" parameterClass="shop" resultClass="shop">
+		<![CDATA[
+			SELECT * FROM t_shops 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="shopName" prepend="AND">
+				UPPER(shopName)
+				LIKE CONCAT('%', UPPER(#shopName: VARCHAR#), '%')
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend="AND">
+				UPPER(description) LIKE CONCAT('%', UPPER(#description: VARCHAR#),
+				'%')
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

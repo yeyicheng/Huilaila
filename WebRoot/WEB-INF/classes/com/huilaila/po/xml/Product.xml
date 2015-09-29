@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Product">
+
+	<typeAlias alias="product" type="com.huilaila.po.Product" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="product" id="pm_product_without_id">
+		<parameter property="shopId" javaType="long" jdbcType="INT" />
+		<parameter property="productName" javaType="string"
+			jdbcType="VARCHAR" />
+		<parameter property="price" javaType="float" jdbcType="FLOAT" />
+		<parameter property="banner" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="freight" javaType="float" jdbcType="FLOAT" />
+		<parameter property="description" javaType="string"
+			jdbcType="VARCHAR" />
+	</parameterMap>
+	<sql id="byProductIdCondition">
+		<![CDATA[
+		   productId = #productId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_product_without_id">
+		<![CDATA[
+			INSERT INTO t_products 
+						(shopId, productName, price, banner, freight, description) 
+				 VALUES (?, ?, ?, ?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="product">
+		<![CDATA[
+			delete from t_products
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byProductIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="product">
+		<![CDATA[
+			UPDATE t_products
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="productName" prepend=",">
+				<![CDATA[
+					productName = #productName: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="price" prepend=",">
+				<![CDATA[
+					price = #price: FLOAT#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="banner" prepend=",">
+				<![CDATA[
+					banner = #banner: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="freight" prepend=",">
+				<![CDATA[
+					freight = #freight: FLOAT#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend=",">
+				<![CDATA[
+					description = #description: VARCHAR#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byProductIdCondition" />
+		</dynamic>
+	</update>
+
+	<sql id="findProductByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(productName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="product">
+		<![CDATA[
+			SELECT  * FROM t_products 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findProductByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY productId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_products 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findProductByPageCondition" />
+		</dynamic>
+	</select>
+
+	<select id="findByExample" parameterClass="product" resultClass="product">
+		<![CDATA[
+			SELECT * FROM t_products 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="shopId" prepend="AND">
+				shopId = #shopId: INT#
+			</isNotEmpty>
+			<isNotEmpty property="productName" prepend="AND">
+				UPPER(productName) LIKE CONCAT('%', UPPER(#productName: VARCHAR#), '%')
+			</isNotEmpty>
+			<isNotEmpty property="description" prepend="AND">
+				UPPER(description) LIKE CONCAT('%', UPPER(#description: VARCHAR#), '%')
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

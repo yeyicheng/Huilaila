@@ -4,8 +4,9 @@
     PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
     "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
 <sqlMapConfig>
-	<settings cacheModelsEnabled="true" enhancementEnabled="true" lazyLoadingEnabled="true"
-		maxRequests="32" maxSessions="10" maxTransactions="5" useStatementNamespaces="true" />
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="32" maxSessions="10"
+		maxTransactions="5" useStatementNamespaces="true" />
 
 	<sqlMap resource="com/huilaila/po/xml/User.xml" />
 	<sqlMap resource="com/huilaila/po/xml/Tag.xml" />
@@ -15,4 +16,11 @@
 	<sqlMap resource="com/huilaila/po/xml/Resume.xml" />
 	<sqlMap resource="com/huilaila/po/xml/JobApplication.xml" />
 	<sqlMap resource="com/huilaila/po/xml/JobFavorite.xml" />
+	<sqlMap resource="com/huilaila/po/xml/Note.xml" />
+	<sqlMap resource="com/huilaila/po/xml/NoteFavorite.xml" />
+	<sqlMap resource="com/huilaila/po/xml/Product.xml" />
+	<sqlMap resource="com/huilaila/po/xml/Shop.xml" />
+	<sqlMap resource="com/huilaila/po/xml/Comment.xml" />
+	<sqlMap resource="com/huilaila/po/xml/Address.xml" />
+	<sqlMap resource="com/huilaila/po/xml/Order.xml" />
 </sqlMapConfig>

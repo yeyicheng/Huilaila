@@ -327,5 +327,177 @@
 				<param name="excludeProperties">conditions, userId, objCondition</param>
 			</result>
 		</action>
+
+		<!-- 小贴士管理 -->
+		<action name="saveNote" class="noteAction" method="saveNote">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateNote" class="noteAction" method="updateNote">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findAllNote" class="noteAction" method="findAllNote">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		<action name="deleteNote" class="noteAction" method="deleteNote">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findNoteByExample" class="noteAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		<action name="findNoteByUser" class="noteAction" method="findByUser">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+
+		<!-- 小贴士收藏管理 -->
+		<action name="saveNoteFavorite" class="noteFavoriteAction"
+			method="saveNoteFavorite">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteNoteFavorite" class="noteFavoriteAction"
+			method="deleteNoteFavorite">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+
+		<!-- 商品管理 -->
+		<action name="saveProduct" class="productAction" method="saveProduct">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateProduct" class="productAction" method="updateProduct">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findAllProduct" class="productAction" method="findAllProduct">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		<action name="deleteProduct" class="productAction" method="deleteProduct">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findProductByExample" class="productAction"
+			method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+
+		<!-- 店铺管理 -->
+		<action name="saveShop" class="shopAction" method="saveShop">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateShop" class="shopAction" method="updateShop">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findAllShop" class="shopAction" method="findAllShop">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		<action name="deleteShop" class="shopAction" method="deleteShop">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findShopByExample" class="shopAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		
+		<!-- 评论管理 -->
+		<action name="saveComment" class="commentAction" method="saveComment">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteComment" class="commentAction" method="deleteComment">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findCommentByExample" class="commentAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		
+		<!-- 地址管理 -->
+		<action name="saveAddress" class="addressAction" method="saveAddress">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteAddress" class="addressAction" method="deleteAddress">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateAddress" class="addressAction" method="updateAddress">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findAddressByExample" class="addressAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		
+		<!-- 订单管理 -->
+		<action name="saveOrder" class="orderAction" method="saveOrder">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteOrder" class="orderAction" method="deleteOrder">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateOrder" class="orderAction" method="updateOrder">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findOrderByExample" class="orderAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
 	</package>
 </struts>

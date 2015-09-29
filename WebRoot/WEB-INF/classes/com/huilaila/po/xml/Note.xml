@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Note">
+	<typeAlias alias="note" type="com.huilaila.po.Note" />
+	<typeAlias alias="user" type="com.huilaila.po.User" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="note" id="pm_note_without_id">
+		<parameter property="content" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="title" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="category" javaType="integer" jdbcType="INT" />
+	</parameterMap>
+	<sql id="bynoteIdCondition">
+		<![CDATA[
+		   noteId = #noteId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_note_without_id">
+		<![CDATA[
+			INSERT INTO t_notes (content, title, category) VALUES (?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="note">
+		<![CDATA[
+			delete from t_notes
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="bynoteIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="note">
+		<![CDATA[
+			UPDATE t_notes
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="title" prepend=",">
+				<![CDATA[
+					title = #title:VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="content" prepend=",">
+				<![CDATA[
+					content = #content: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="category" prepend=",">
+				<![CDATA[
+					category = #category: VARCHAR#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="bynoteIdCondition" />
+		</dynamic>
+	</update>
+
+	<sql id="findnoteByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(title) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#) , '%')
+				    OR upper(content) LIKE CONCAT('%', upper(#conditions[]:VARCHAR#) , '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="note">
+		<![CDATA[
+			SELECT * FROM t_notes  
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findnoteByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY noteId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_notes 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findnoteByPageCondition" />
+		</dynamic>
+	</select>
+
+
+	<select id="findByExample" parameterClass="note" resultClass="note">
+		<![CDATA[
+			SELECT * FROM t_notes 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="title" prepend="AND">
+				title like
+				CONCAT('%', #title: VARCHAR#, '%')
+			</isNotEmpty>
+			<isNotEmpty property="category" prepend="AND">
+				category  =
+				#category: INT#
+			</isNotEmpty>
+			<isNotEmpty property="content" prepend="AND">
+				content
+				LIKE CONCAT('%', #content: VARCHAR#, '%')
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="findByUser" parameterClass="user" resultClass="note">
+		<![CDATA[
+		select * from t_notes where noteId in (select noteId from t_noteFavorites
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+		)
+		]]>
+	</select>
+</sqlMap>

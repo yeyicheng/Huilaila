@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="NoteFavorite">
+	<typeAlias alias="noteFavorite" type="com.huilaila.po.NoteFavorite" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="noteFavorite" id="pm_noteFavorite_without_id">
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="noteId" javaType="long" jdbcType="INT" />
+	</parameterMap>
+	
+	<sql id="byNoteFavoriteIdCondition">
+		<![CDATA[
+		   noteFavoriteId = #noteFavoriteId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_noteFavorite_without_id">
+		<![CDATA[
+			INSERT INTO t_noteFavorites (userId, noteId) VALUES (?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="noteFavorite">
+		<![CDATA[
+			delete from t_noteFavorites
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byNoteFavoriteIdCondition" />
+		</dynamic>
+	</delete>
+</sqlMap>

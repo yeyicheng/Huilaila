@@ -38,4 +38,32 @@
 	<bean id="jobApplicationDao" class="com.huilaila.dao.impl.JobApplicationDao">
 		<property name="sqlMapClient" ref="sqlMapClient" />
 	</bean>
+
+	<bean id="noteDao" class="com.huilaila.dao.impl.NoteDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="noteFavoriteDao" class="com.huilaila.dao.impl.NoteFavoriteDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="productDao" class="com.huilaila.dao.impl.ProductDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="shopDao" class="com.huilaila.dao.impl.ShopDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="commentDao" class="com.huilaila.dao.impl.CommentDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="addressDao" class="com.huilaila.dao.impl.AddressDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="orderDao" class="com.huilaila.dao.impl.OrderDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
 </beans>
