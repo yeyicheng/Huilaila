@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProductImage">
+
+	<typeAlias alias="productImage" type="com.huilaila.po.ProductImage" />
+
+	<parameterMap class="productImage" id="pm_productImage_without_id">
+		<parameter property="productId" javaType="long" jdbcType="INT" />
+		<parameter property="imageUrl" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>
+	
+	<sql id="byProductImageIdCondition">
+		<![CDATA[
+		   productImageId = #productImageId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_productImage_without_id">
+		<![CDATA[
+			INSERT INTO t_productImages (productId, imageUrl) 
+				 VALUES (?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="productImage">
+		<![CDATA[
+			delete from t_productImages
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byProductImageIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="productImage">
+		<![CDATA[
+			UPDATE t_productImages
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="imageUrl" prepend=",">
+				<![CDATA[
+					imageUrl = #imageUrl: VARCHAR#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byProductImageIdCondition" />
+		</dynamic>
+	</update>
+
+	<!-- <sql id="findProductImageByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(productImageName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="productImage">
+		<![CDATA[
+			SELECT  * FROM t_productImagess 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findProductImageByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY productImageId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_productImagess 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findProductImageByPageCondition" />
+		</dynamic>
+	</select> -->
+
+	<select id="findByExample" parameterClass="productImage" resultClass="productImage">
+		<![CDATA[
+			SELECT * FROM t_productImages 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="productId" prepend="AND">
+				productId = #productId: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

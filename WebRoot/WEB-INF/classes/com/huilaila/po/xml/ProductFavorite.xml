@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProductFavorite">
+
+	<typeAlias alias="productFavorite" type="com.huilaila.po.ProductFavorite" />
+
+	<parameterMap class="productFavorite" id="pm_productFavorite_without_id">
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="productId" javaType="long" jdbcType="INT" />
+	</parameterMap>
+	
+	<sql id="byProductFavoriteIdCondition">
+		<![CDATA[
+		   productFavoriteId = #productFavoriteId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_productFavorite_without_id">
+		<![CDATA[
+			INSERT INTO t_productFavorites (userId, productId) 
+				 VALUES (?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="productFavorite">
+		<![CDATA[
+			delete from t_productFavorites
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byProductFavoriteIdCondition" />
+		</dynamic>
+	</delete> 
+
+	<!-- <update id="update" parameterClass="productFavorite">
+		<![CDATA[
+			UPDATE t_productFavorites
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="count" prepend=",">
+				<![CDATA[
+					count = #count: INT#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byProductFavoriteIdCondition" />
+		</dynamic>
+	</update> -->
+
+	<!-- <sql id="findProductFavoriteByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(productFavoriteName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="productFavorite">
+		<![CDATA[
+			SELECT  * FROM t_productFavoritess 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findProductFavoriteByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY productFavoriteId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_productFavoritess 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findProductFavoriteByPageCondition" />
+		</dynamic>
+	</select> -->
+
+	<select id="findByExample" parameterClass="productFavorite" resultClass="productFavorite">
+		<![CDATA[
+			SELECT * FROM t_productFavorites 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

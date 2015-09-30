@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CartItem">
+
+	<typeAlias alias="cartItem" type="com.huilaila.po.CartItem" />
+	<typeAlias alias="page" type="com.huilaila.core.Page" />
+
+	<parameterMap class="cartItem" id="pm_cartItem_without_id">
+		<parameter property="userId" javaType="long" jdbcType="INT" />
+		<parameter property="productId" javaType="long" jdbcType="INT" />
+		<parameter property="count" javaType="integer" jdbcType="INT" />
+	</parameterMap>
+	
+	<sql id="byCartItemIdCondition">
+		<![CDATA[
+		   cartItemId = #cartItemId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_cartItem_without_id">
+		<![CDATA[
+			INSERT INTO t_cartItems (userId, productId, count) 
+				 VALUES (?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<delete id="deleteById" parameterClass="cartItem">
+		<![CDATA[
+			delete from t_cartItems
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byCartItemIdCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="cartItem">
+		<![CDATA[
+			UPDATE t_cartItems
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="count" prepend=",">
+				<![CDATA[
+					count = #count: INT#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byCartItemIdCondition" />
+		</dynamic>
+	</update>
+
+	<!-- <sql id="findCartItemByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(cartItemName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="cartItem">
+		<![CDATA[
+			SELECT  * FROM t_cartItemss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findCartItemByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY cartItemId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_cartItemss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findCartItemByPageCondition" />
+		</dynamic>
+	</select> -->
+
+	<select id="findByExample" parameterClass="cartItem" resultClass="cartItem">
+		<![CDATA[
+			SELECT * FROM t_cartItems 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="userId" prepend="AND">
+				userId = #userId: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

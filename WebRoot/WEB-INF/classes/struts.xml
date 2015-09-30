@@ -499,5 +499,87 @@
 				<param name="excludeProperties">conditions, objCondition, userId</param>
 			</result>
 		</action>
+		
+		<!-- 购物车管理 -->
+		<action name="saveCartItem" class="cartItemAction" method="saveCartItem">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteCartItem" class="cartItemAction" method="deleteCartItem">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateCartItem" class="cartItemAction" method="updateCartItem">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findCartItemByExample" class="cartItemAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		
+		<!-- 订单-商品管理 -->
+		<action name="saveOrderItem" class="orderItemAction" method="saveOrderItem">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findOrderItemByExample" class="orderItemAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		
+		<!-- 商品图片管理 -->
+		<action name="saveProductImage" class="productImageAction" method="saveProductImage">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteProductImage" class="productImageAction" method="deleteProductImage">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="updateProductImage" class="productImageAction" method="updateProductImage">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="findProductImageByExample" class="productImageAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
+		
+		<!-- 商品收藏管理 -->
+		<action name="saveProductFavorite" class="productFavoriteAction" method="saveProductFavorite">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<action name="deleteProductFavorite" class="productFavoriteAction" method="deleteProductFavorite">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action>
+		<!-- <action name="updateProductFavorite" class="productFavoriteAction" method="updateProductFavorite">
+			<result type="json">
+				<param name="includeProperties">success, tip</param>
+			</result>
+		</action> -->
+		<action name="findProductFavoriteByExample" class="productFavoriteAction" method="findByExample">
+			<result type="json">
+				<param name="root">pageBean</param>
+				<param name="excludeProperties">conditions, objCondition, userId</param>
+			</result>
+		</action>
 	</package>
 </struts>

@@ -81,4 +81,24 @@
 		scope="prototype">
 		<property name="orderService" ref="orderService" />
 	</bean>
+
+	<bean name="cartItemAction" class="com.huilaila.action.CartItemAction"
+		scope="prototype">
+		<property name="cartItemService" ref="cartItemService" />
+	</bean>
+
+	<bean name="orderItemAction" class="com.huilaila.action.OrderItemAction"
+		scope="prototype">
+		<property name="orderItemService" ref="orderItemService" />
+	</bean>
+
+	<bean name="productImageAction" class="com.huilaila.action.ProductImageAction"
+		scope="prototype">
+		<property name="productImageService" ref="productImageService" />
+	</bean>
+	
+	<bean name="productFavoriteAction" class="com.huilaila.action.ProductFavoriteAction"
+		scope="prototype">
+		<property name="productFavoriteService" ref="productFavoriteService" />
+	</bean>
 </beans>

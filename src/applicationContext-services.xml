@@ -54,16 +54,28 @@
 	<bean id="shopService" class="com.huilaila.service.impl.ShopService">
 		<property name="shopDao" ref="shopDao" />
 	</bean>
-	
+
 	<bean id="commentService" class="com.huilaila.service.impl.CommentService">
 		<property name="commentDao" ref="commentDao" />
 	</bean>
-	
+
 	<bean id="addressService" class="com.huilaila.service.impl.AddressService">
 		<property name="addressDao" ref="addressDao" />
 	</bean>
-	
-	<bean id="orderService" class="com.huilaila.service.impl.OrderService">
-		<property name="orderDao" ref="orderDao" />
+
+	<bean id="cartItemService" class="com.huilaila.service.impl.CartItemService">
+		<property name="cartItemDao" ref="cartItemDao" />
+	</bean>
+
+	<bean id="orderItemService" class="com.huilaila.service.impl.OrderItemService">
+		<property name="orderItemDao" ref="orderItemDao" />
+	</bean>
+
+	<bean id="productImageService" class="com.huilaila.service.impl.ProductImageService">
+		<property name="productImageDao" ref="productImageDao" />
+	</bean>
+
+	<bean id="productFavoriteService" class="com.huilaila.service.impl.ProductFavoriteService">
+		<property name="productFavoriteDao" ref="productFavoriteDao" />
 	</bean>
 </beans>

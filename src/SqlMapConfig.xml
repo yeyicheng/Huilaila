@@ -23,4 +23,8 @@
 	<sqlMap resource="com/huilaila/po/xml/Comment.xml" />
 	<sqlMap resource="com/huilaila/po/xml/Address.xml" />
 	<sqlMap resource="com/huilaila/po/xml/Order.xml" />
+	<sqlMap resource="com/huilaila/po/xml/CartItem.xml" />
+	<sqlMap resource="com/huilaila/po/xml/OrderItem.xml" />
+	<sqlMap resource="com/huilaila/po/xml/ProductImage.xml" />
+	<sqlMap resource="com/huilaila/po/xml/ProductFavorite.xml" />
 </sqlMapConfig>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="OrderItem">
+
+	<typeAlias alias="orderItem" type="com.huilaila.po.OrderItem" />
+
+	<parameterMap class="orderItem" id="pm_orderItem_without_id">
+		<parameter property="orderId" javaType="long" jdbcType="INT" />
+		<parameter property="productId" javaType="long" jdbcType="INT" />
+		<parameter property="count" javaType="integer" jdbcType="INT" />
+	</parameterMap>
+	
+	<sql id="byOrderItemIdCondition">
+		<![CDATA[
+		   orderItemId = #orderItemId:LONG#
+	    ]]>
+	</sql>
+
+	<insert id="save" parameterMap="pm_orderItem_without_id">
+		<![CDATA[
+			INSERT INTO t_orderItems (orderId, productId, count) 
+				 VALUES (?, ?, ?)
+		]]>
+		<selectKey resultClass="long">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<!-- <delete id="deleteById" parameterClass="orderItem">
+		<![CDATA[
+			delete from t_orderItems
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byOrderItemIdCondition" />
+		</dynamic>
+	</delete> -->
+
+	<!-- <update id="update" parameterClass="orderItem">
+		<![CDATA[
+			UPDATE t_orderItems
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty property="count" prepend=",">
+				<![CDATA[
+					count = #count: INT#
+				]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byOrderItemIdCondition" />
+		</dynamic>
+	</update> -->
+
+	<!-- <sql id="findOrderItemByPageCondition">
+		<isNotEmpty property="conditions">
+			<iterate property="conditions" open="(" close=")"
+				conjunction="OR">
+				<![CDATA[
+					upper(orderItemName) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+				    OR upper(description) LIKE concat('%', upper(#conditions[]:VARCHAR#), '%')
+		    	]]>
+			</iterate>
+		</isNotEmpty>
+	</sql>
+
+	<select id="findByPage" parameterClass="page" resultClass="orderItem">
+		<![CDATA[
+			SELECT  * FROM t_orderItemss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findOrderItemByPageCondition" />
+		</dynamic>
+		<![CDATA[
+			ORDER BY orderItemId limit $start$, $limit$
+		]]>
+	</select>
+
+	<select id="findByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM t_orderItemss 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="findOrderItemByPageCondition" />
+		</dynamic>
+	</select> -->
+
+	<select id="findByExample" parameterClass="orderItem" resultClass="orderItem">
+		<![CDATA[
+			SELECT * FROM t_orderItems 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty property="orderId" prepend="AND">
+				orderId = #orderId: INT#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

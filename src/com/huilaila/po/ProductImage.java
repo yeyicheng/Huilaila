@@ -1,16 +1,16 @@
 package com.huilaila.po;
 
 public class ProductImage {
-	Long imageId;
+	Long productImageId;
 	Long productId;
 	String imageUrl;
 
-	public Long getImageId() {
-		return imageId;
+	public Long getProductImageId() {
+		return productImageId;
 	}
 
-	public void setImageId(Long imageId) {
-		this.imageId = imageId;
+	public void setProductImageId(Long productImageId) {
+		this.productImageId = productImageId;
 	}
 
 	public Long getProductId() {

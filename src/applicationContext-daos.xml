@@ -54,16 +54,32 @@
 	<bean id="shopDao" class="com.huilaila.dao.impl.ShopDao">
 		<property name="sqlMapClient" ref="sqlMapClient" />
 	</bean>
-	
+
 	<bean id="commentDao" class="com.huilaila.dao.impl.CommentDao">
 		<property name="sqlMapClient" ref="sqlMapClient" />
 	</bean>
-	
+
 	<bean id="addressDao" class="com.huilaila.dao.impl.AddressDao">
 		<property name="sqlMapClient" ref="sqlMapClient" />
 	</bean>
-	
+
 	<bean id="orderDao" class="com.huilaila.dao.impl.OrderDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="cartItemDao" class="com.huilaila.dao.impl.CartItemDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="orderItemDao" class="com.huilaila.dao.impl.OrderItemDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="productImageDao" class="com.huilaila.dao.impl.ProductImageDao">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="productFavoriteDao" class="com.huilaila.dao.impl.ProductFavoriteDao">
 		<property name="sqlMapClient" ref="sqlMapClient" />
 	</bean>
 </beans>
