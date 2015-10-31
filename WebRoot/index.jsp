@@ -24,9 +24,9 @@
 	-->
 </head>
 <body>
-	<s:form action="saveTag.action" method="post">
-		<s:textfield name="tag.tag" label="标签" value="90后"></s:textfield>
-		<s:submit value="添加"></s:submit>
+	<s:form action="uploadAvatar.action" method="post" enctype="multipart/form-data">
+		<s:file label="upload" name="avatar"></s:file>
+		<s:submit value="upload" />
 	</s:form>
 </body>
 </html>

@@ -18,14 +18,14 @@
 
 	<package name="json" extends="json-default">
 		<!-- 商品管理 -->
-		<action name="saveCommodity" class="commodityAction" method="saveCommodity">
-			<!-- <interceptor-ref name="loginInteceptor"></interceptor-ref> -->
+		<!-- <action name="saveCommodity" class="commodityAction" method="saveCommodity">
+			<interceptor-ref name="loginInteceptor"></interceptor-ref>
 			<result type="json">
 				<param name="includeProperties">success,dutyId</param>
 			</result>
 		</action>
 		<action name="deleteCommodity" class="commodityAction" method="deleteCommodity">
-			<!-- <interceptor-ref name="loginInteceptor"></interceptor-ref> -->
+			<interceptor-ref name="loginInteceptor"></interceptor-ref>
 			<result type="json">
 				<param name="includeProperties">success</param>
 			</result>
@@ -72,7 +72,7 @@
 				<param name="includeProperties">success</param>
 			</result>
 		</action>
-
+ -->
 		<!-- 用户管理 -->
 		<action name="saveUser" class="userAction" method="saveUser">
 			<result type="json">
@@ -130,7 +130,19 @@
 				<param name="excludeProperties">objCondition, userId, conditions</param>
 			</result>
 		</action>
-
+		<action name="uploadAvatar" class="userAction" method="uploadAvatar">
+            <interceptor-ref name="fileUpload">
+                <!-- 文件过滤 -->
+                <param name="allowedTypes">image/*</param>
+                <!-- 文件大小, 以字节为单位 -->
+                <param name="maximumSize">4000000</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>  
+            <result type="json">
+				<param name="root">pageBean</param>
+			</result>
+		</action>
+		
 		<!-- 标签管理 -->
 		<action name="saveTag" class="tagAction" method="saveTag">
 			<result type="json">

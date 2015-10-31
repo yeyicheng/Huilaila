@@ -18,6 +18,8 @@
 		<parameter property="freight" javaType="float" jdbcType="FLOAT" />
 		<parameter property="description" javaType="string"
 			jdbcType="VARCHAR" />
+		<parameter property="category" javaType="integer" jdbcType="INT" />
+		<parameter property="area" javaType="integer" jdbcType="INT" />
 	</parameterMap>
 	<sql id="byProductIdCondition">
 		<![CDATA[
@@ -28,8 +30,8 @@
 	<insert id="save" parameterMap="pm_product_without_id">
 		<![CDATA[
 			INSERT INTO t_products 
-						(shopId, productName, price, banner, freight, description) 
-				 VALUES (?, ?, ?, ?, ?, ?)
+						(shopId, productName, price, banner, freight, description, category, area) 
+				 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 		]]>
 		<selectKey resultClass="long">
 			<![CDATA[
@@ -75,6 +77,16 @@
 			<isNotEmpty property="description" prepend=",">
 				<![CDATA[
 					description = #description: VARCHAR#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="category" prepend=",">
+				<![CDATA[
+					category = #category: INT#
+				]]>
+			</isNotEmpty>
+			<isNotEmpty property="area" prepend=",">
+				<![CDATA[
+					area = #area: INT#
 				]]>
 			</isNotEmpty>
 		</dynamic>
@@ -129,6 +141,12 @@
 			</isNotEmpty>
 			<isNotEmpty property="description" prepend="AND">
 				UPPER(description) LIKE CONCAT('%', UPPER(#description: VARCHAR#), '%')
+			</isNotEmpty>
+			<isNotEmpty property="category" prepend="AND">
+				category = #category: INT#
+			</isNotEmpty>
+			<isNotEmpty property="area" prepend="AND">
+				area = #area: INT#
 			</isNotEmpty>
 		</dynamic>
 	</select>

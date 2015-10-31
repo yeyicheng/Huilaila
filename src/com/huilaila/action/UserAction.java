@@ -1,9 +1,16 @@
 package com.huilaila.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.struts2.ServletActionContext;
 
 import com.huilaila.core.BaseAction;
 import com.huilaila.core.Page;
@@ -34,6 +41,83 @@ public class UserAction extends BaseAction {
 	private Tag tag;
 
 	private Job job;
+
+	// 封装上传文件域的属性
+	private File avatar;
+	// 封装上传文件类型的属性
+	private String avatarContentType;
+	// 封装上传文件名的属性
+	private String avatarFileName;
+	// 接受依赖注入的属性
+	private String savePath;
+
+	public String uploadAvatar() {
+		FileOutputStream fos = null;
+		FileInputStream fis = null;
+		pageBean = new Page();
+		try {
+			// 建立文件输出流
+			File outFile = new File(getSavePath(), getAvatarFileName() + "_"
+					+ java.lang.System.currentTimeMillis());
+			fos = new FileOutputStream(outFile);
+			// 建立文件上传流
+			System.out.println(outFile.getAbsolutePath());
+//			System.out.println(getAvatar());
+			fis = new FileInputStream(getAvatar());
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) > 0) {
+				fos.write(buffer, 0, len);
+			}
+			// 把头像地址写入数据库
+			User currUser = (User) getSession().getAttribute("currUser");
+			User u = new User();
+			u.setUserId(currUser.getUserId());
+			u.setAvatar(outFile.getAbsolutePath());
+//			currUser.setAvatar(outFile.getAbsolutePath());
+			userService.updateUser(u);
+			pageBean.setSuccess(true);
+		} catch (Exception e) {
+			System.out.println("文件上传失败");
+			pageBean.setSuccess(false);
+			e.printStackTrace();
+		} finally {
+			close(fos, fis);
+		}
+		return SUCCESS;
+	}
+
+	/**
+	 * 返回上传文件的保存位置
+	 * 
+	 * @return
+	 */
+	public String getSavePath() throws Exception {
+		return ServletActionContext.getServletContext().getRealPath("/images");
+	}
+
+	public void setSavePath(String savePath) {
+		this.savePath = savePath;
+	}
+
+	private void close(FileOutputStream fos, FileInputStream fis) {
+		if (fis != null) {
+			try {
+				fis.close();
+			} catch (IOException e) {
+				System.out.println("FileInputStream关闭失败");
+				e.printStackTrace();
+			}
+		}
+		if (fos != null) {
+			try {
+				fos.close();
+			} catch (IOException e) {
+				System.out.println("FileOutputStream关闭失败");
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public String logout() {
 		getSession().removeAttribute("currUser");
@@ -109,9 +193,12 @@ public class UserAction extends BaseAction {
 		}
 		pageBean = new Page();
 		pageBean.setConditions(utf8Condition);
-		int start = Integer.valueOf(getRequest().getParameter("start"));
-		int limit = Integer.valueOf(getRequest().getParameter("limit"));
-		pageBean.setLimit(limit = limit == 0 ? 20 : limit);
+		String start = getRequest().getParameter("start");
+		String limit = getRequest().getParameter("limit");
+		int startInt = start != null ? Integer.valueOf(start) : 0;
+		int limitInt = limit != null ? Integer.valueOf(limit) : 10;
+		pageBean.setLimit(limitInt);
+		pageBean.setStart(startInt);
 		pageBean = userService.findByPage(pageBean);
 		pageBean.setSuccess(true);
 		return SUCCESS;
@@ -257,6 +344,30 @@ public class UserAction extends BaseAction {
 
 	public void setJob(Job job) {
 		this.job = job;
+	}
+
+	public File getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(File avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getAvatarContentType() {
+		return avatarContentType;
+	}
+
+	public void setAvatarContentType(String avatarContentType) {
+		this.avatarContentType = avatarContentType;
+	}
+
+	public String getAvatarFileName() {
+		return avatarFileName;
+	}
+
+	public void setAvatarFileName(String avatarFileName) {
+		this.avatarFileName = avatarFileName;
 	}
 
 }

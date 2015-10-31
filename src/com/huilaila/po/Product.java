@@ -8,6 +8,24 @@ public class Product {
 	String banner;
 	Float freight;
 	String description;
+	Integer category;
+	Integer area;
+
+	public Integer getArea() {
+		return area;
+	}
+
+	public void setArea(Integer area) {
+		this.area = area;
+	}
+
+	public Integer getCategory() {
+		return category;
+	}
+	
+	public void setCategory(Integer category) {
+		this.category = category;
+	}
 
 	public Long getProductId() {
 		return productId;
